@@ -1,8 +1,13 @@
-class AndGate:
+class Comps:
 
     def __init__(self, name):
-
         self.comp_name = name
+
+    def __repr__(self):
+        return self.comp_name
+
+
+class AndGate(Comps):
 
     def output(self, input_list):
 
@@ -19,11 +24,7 @@ class AndGate:
                 break
 
 
-class NandGate:
-
-    def __init__(self, name):
-
-        self.comp_name = name
+class NandGate(Comps):
 
     def output(self, input_list):
 
@@ -40,11 +41,7 @@ class NandGate:
                 break
 
 
-class OrGate:
-
-    def __init__(self, name):
-
-        self.comp_name = name
+class OrGate(Comps):
 
     def output(self, input_list):
 
@@ -61,11 +58,7 @@ class OrGate:
                 self.out = 0
 
 
-class NorGate:
-
-    def __init__(self, name):
-
-        self.comp_name = name
+class NorGate(Comps):
 
     def output(self, input_list):
 
@@ -82,11 +75,7 @@ class NorGate:
                 self.out = 1
 
 
-class XorGate:
-
-    def __init__(self, name):
-
-        self.comp_name = name
+class XorGate(Comps):
 
     def output(self, *inputs):
 
@@ -100,11 +89,7 @@ class XorGate:
             self.out = 1
 
 
-class NotGate:
-
-    def __init__(self, name):
-
-        self.comp_name = name
+class NotGate(Comps):
 
     def output(self, inputs):
 
@@ -117,10 +102,10 @@ class NotGate:
             self.out = 1
 
 
-class ConstOut:
+class ConstOut(Comps):
 
     def __init__(self, name, output):
-        self.comp_name = name
+        super().__init__(name)
 
         self.out = output
 
@@ -131,15 +116,26 @@ b = ConstOut('Cst2', 1)
 
 c = ConstOut('Cst3', 1)
 
-d = AndGate('And1')
+d = OrGate('Or1')
 
-e = AndGate('And2')
+e = AndGate('And1')
 
-f = AndGate('And3')
+f = NandGate('Nand1')
 
-g = AndGate('And4')
+g = NorGate('Nor1')
 
 connection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e]}
+
+
+def flat(input_list):
+    flat_list = []
+
+    for sub_list in input_list:
+
+        for index in sub_list:
+            flat_list.append(index)
+
+    return flat_list
 
 
 def order1(connection_dict):
@@ -148,30 +144,34 @@ def order1(connection_dict):
     for key in connection_dict:
 
         if connection_dict[key] == []:
-            layer1.append(key)
+            layer1.append(repr(key))
 
     return layer1
 
 
-def order2(connection_dict, layer_list):
+def order2(connection_dict, layer_list, index):
     layer = []
+
+    flat_list = flat(layer_list)
 
     for key in connection_dict:
 
-        a = 0
+        counter = 0
 
         for value in connection_dict[key]:
 
-            if value not in layer_list:
+            if repr(value) in layer_list[index]:
+
+                counter += 1
+
+            elif repr(value) not in flat_list:
+
+                counter = 0
 
                 break
 
-            else:
-
-                a += 1
-
-        if a >= 1 and key not in layer:
-            layer.append(key)
+        if counter >= 1 and repr(key) not in layer:
+            layer.append(repr(key))
 
     return layer
 
@@ -187,7 +187,7 @@ def layer_list(connection_dict):
 
     while comps != len(connection_dict):
 
-        layers.append(order2(connection_dict, layers[index]))
+        layers.append(order2(connection_dict, layers, index))
 
         index += 1
 
