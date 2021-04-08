@@ -15,5 +15,3 @@ def test_out():
     assert b.out == 0, 'The result expected was 0'
     c.output([1, 1])
     assert c.out == 0, 'The result expected was 0'
-
-
