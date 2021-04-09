@@ -144,7 +144,7 @@ def order1(connection_dict):
     for key in connection_dict:
 
         if connection_dict[key] == []:
-            layer1.append(repr(key))
+            layer1.append(key)
 
     return layer1
 
@@ -160,18 +160,18 @@ def order2(connection_dict, layer_list, index):
 
         for value in connection_dict[key]:
 
-            if repr(value) in layer_list[index]:
+            if value in layer_list[index]:
 
                 counter += 1
 
-            elif repr(value) not in flat_list:
+            elif value not in flat_list:
 
                 counter = 0
 
                 break
 
-        if counter >= 1 and repr(key) not in layer:
-            layer.append(repr(key))
+        if counter >= 1 and key not in layer:
+            layer.append(key)
 
     return layer
 

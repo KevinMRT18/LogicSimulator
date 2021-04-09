@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="Testing" />
+    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="All gates are now a subclass of Comps.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/components.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,7 +31,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Logic_Simulator" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python tests.pytest in test1.py">
     <configuration name="pytest for test1.test_out" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="LogicSimulator" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -45,8 +48,25 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
+    <configuration name="pytest in test1.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="LogicSimulator" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/test1.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest in test1.py" />
         <item itemvalue="Python tests.pytest for test1.test_out" />
       </list>
     </recent_temporary>
@@ -74,7 +94,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617841186462</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="All gates are now a subclass of Comps.">
+      <created>1617842063124</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1617842063124</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -91,6 +118,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Testing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Testing" />
+    <MESSAGE value="All gates are now a subclass of Comps." />
+    <option name="LAST_COMMIT_MESSAGE" value="All gates are now a subclass of Comps." />
   </component>
 </project>
