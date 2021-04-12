@@ -1,105 +1,113 @@
+import itertools as it
+
+
 class Comps:
 
     def __init__(self, name):
         self.comp_name = name
+        self.out = None
 
     def __repr__(self):
         return self.comp_name
+
+    class Gates:
+
+        def __init__(self, name, gate_type):
+            self.gate_type = gate_type
+            self.comp_name = name
+            self.out = None
+
+        def output(self, input_list):
+
+            if (self.gate_type == 'and' and all(input_list)) \
+                    or (self.gate_type == 'nand' and input_list.count(0) >= 1) \
+                    or (self.gate_type == 'or' and input_list.count(1) >= 1)  \
+                    or (self.gate_type == 'nor' and input_list.count(1) == 0) \
+                    or (self.gate_type == 'xor' and input_list.count(1) % 2 != 0) \
+                    or (self.gate_type == 'not' and input_list == [0]):
+
+                self.out = 1
+
+            else:
+
+                self.out = 0
 
 
 class AndGate(Comps):
 
     def output(self, input_list):
 
-        for i in input_list:
+        if all(input_list):
 
-            if i == 1:
+            self.out = 1
 
-                self.out = 1
+        else:
 
-            else:
-
-                self.out = 0
-
-                break
+            self.out = 0
 
 
 class NandGate(Comps):
 
     def output(self, input_list):
 
-        for i in input_list:
+        if input_list.count(0) >= 1:
 
-            if i == 1:
+            self.out = 1
 
-                self.out = 0
+        else:
 
-            else:
-
-                self.out = 1
-
-                break
+            self.out = 0
 
 
 class OrGate(Comps):
 
     def output(self, input_list):
 
-        for i in input_list:
+        if input_list.count(1) >= 1:
 
-            if i == 1:
+            self.out = 1
 
-                self.out = 1
+        else:
 
-                break
-
-            else:
-
-                self.out = 0
+            self.out = 0
 
 
 class NorGate(Comps):
 
     def output(self, input_list):
 
-        for i in input_list:
+        if input_list.count(1) == 0:
 
-            if i == 1:
+            self.out = 1
 
-                self.out = 0
+        else:
 
-                break
-
-            else:
-
-                self.out = 1
+            self.out = 0
 
 
 class XorGate(Comps):
 
-    def output(self, *inputs):
+    def output(self, input_list):
 
-        self.variable = inputs.count(1)
+        if input_list.count(1) % 2 != 0:
 
-        if (self.variable % 2) == 0:
-
-            self.out = 0
+            self.out = 1
 
         else:
-            self.out = 1
+            self.out = 0
 
 
 class NotGate(Comps):
 
-    def output(self, inputs):
+    def output(self, input_list):
 
-        if inputs == 1:
+        if input_list == 0:
 
-            self.out = 0
+            self.out = 1
 
         else:
 
-            self.out = 1
+            self.out = 0
 
 
 class ConstOut(Comps):
@@ -127,73 +135,36 @@ g = NorGate('Nor1')
 connection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e]}
 
 
-def flat(input_list):
-    flat_list = []
+def _create_layer(connections, current_layers):
 
-    for sub_list in input_list:
+    mapped_comps = list(it.chain.from_iterable(current_layers))
 
-        for index in sub_list:
-            flat_list.append(index)
-
-    return flat_list
-
-
-def order1(connection_dict):
-    layer1 = []
-
-    for key in connection_dict:
-
-        if connection_dict[key] == []:
-            layer1.append(key)
-
-    return layer1
-
-
-def order2(connection_dict, layer_list, index):
     layer = []
 
-    flat_list = flat(layer_list)
+    for comp, input_comps in connections.items():
 
-    for key in connection_dict:
+        if comp not in layer \
+                and comp not in mapped_comps \
+                and all(input_comp in mapped_comps for input_comp in input_comps):
 
-        counter = 0
-
-        for value in connection_dict[key]:
-
-            if value in layer_list[index]:
-
-                counter += 1
-
-            elif value not in flat_list:
-
-                counter = 0
-
-                break
-
-        if counter >= 1 and key not in layer:
-            layer.append(key)
+            layer.append(comp)
 
     return layer
 
 
-def layer_list(connection_dict):
-    layers = []
+def organize_comps(connections):
 
-    layers.append(order1(connection_dict))
+    layers = [[comp for comp in connections if connections[comp] == []]]
 
-    index = 0
+    comp_count = len(layers[0])
 
-    comps = 0
+    num_of_comps = len(connections)
 
-    while comps != len(connection_dict):
+    while comp_count != num_of_comps:
+        new_layer = _create_layer(connections, layers)
 
-        layers.append(order2(connection_dict, layers, index))
+        layers.append(new_layer)
 
-        index += 1
-
-        comps = 0
-
-        for a in layers:
-            comps += len(a)
+        comp_count += len(new_layer)
 
     return layers
