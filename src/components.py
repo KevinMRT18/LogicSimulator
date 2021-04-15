@@ -5,32 +5,32 @@ class Comps:
 
     def __init__(self, name):
         self.comp_name = name
-        self.out = None
+        self.out = 0
 
     def __repr__(self):
         return self.comp_name
 
-    class Gates:
 
-        def __init__(self, name, gate_type):
-            self.gate_type = gate_type
-            self.comp_name = name
-            self.out = None
+class Gate:
 
-        def output(self, input_list):
+    def __init__(self, name, gate_type):
+        self.gate_type = gate_type
+        self.comp_name = name
+        self.out = 0
 
-            if (self.gate_type == 'and' and all(input_list)) \
-                    or (self.gate_type == 'nand' and input_list.count(0) >= 1) \
-                    or (self.gate_type == 'or' and input_list.count(1) >= 1)  \
-                    or (self.gate_type == 'nor' and input_list.count(1) == 0) \
-                    or (self.gate_type == 'xor' and input_list.count(1) % 2 != 0) \
-                    or (self.gate_type == 'not' and input_list == [0]):
+    def output(self, input_list):
 
-                self.out = 1
+        output_type = {'and': all(input_list), 'nand': input_list.count(0) >= 1,
+                       'or': input_list.count(1) >= 1, 'nor': input_list.count(1) == 0,
+                       'xor': input_list.count(1) % 2 != 0, 'not': input_list == [0]}.pop(self.gate_type)
 
-            else:
+        if output_type:
 
-                self.out = 0
+            self.out = 1
+
+        else:
+
+            self.out = 0
 
 
 class AndGate(Comps):
@@ -118,21 +118,17 @@ class ConstOut(Comps):
         self.out = output
 
 
-a = ConstOut('Cst1', 0)
+class Clock(Comps):
 
-b = ConstOut('Cst2', 1)
+    def output(self):
 
-c = ConstOut('Cst3', 1)
+        if self.out == 1:
 
-d = OrGate('Or1')
+            self.out = 0
 
-e = AndGate('And1')
+        else:
 
-f = NandGate('Nand1')
-
-g = NorGate('Nor1')
-
-connection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e]}
+            self.out = 1
 
 
 def _create_layer(connections, current_layers):
