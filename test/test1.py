@@ -67,3 +67,5 @@ def test_mux():
     j.output([1, 1, 0, 0, 1, 1])
 
     assert j.out == 1
+
+

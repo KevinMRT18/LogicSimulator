@@ -160,22 +160,10 @@ class Mux(Comps):
 
 
 class Switch(Comps):
-    def output(self, input_list):
-        if len(input_list) == 2:
-            input_0 = input_list[0]
-            mode = input_list[1]
-            if mode == 1:
-                self.out = input_0
-            else:
-                pass
-        else:
-            input_0 = input_list[0]
-            input_1 = input_list[1]
-            mode = input_list[2]
-            if mode == 1:
-                self.out = input_1
-            else:
-                self.out = input_0
+
+    pass
+
+
 
 
 def _create_layer(connections, current_layers):
