@@ -131,6 +131,41 @@ class Clock(Comps):
             self.out = 1
 
 
+class Mux(Comps):
+
+    def output(self, input_list):
+
+        input_0 = input_list[0]
+        input_1 = input_list[1]
+        input_2 = input_list[2]
+        input_3 = input_list[3]
+        mode_0 = input_list[4]
+        mode_1 = input_list[5]
+
+        if mode_1 == 0 and mode_0 == 0:
+
+            self.out = input_0
+
+        elif mode_1 == 0 and mode_0 == 1:
+
+            self.out = input_1
+
+        elif mode_1 == 1 and mode_0 == 0:
+
+            self.out = input_2
+
+        else:
+
+            self.out = input_3
+
+
+class Switch(Comps):
+
+    pass
+
+
+
+
 def _create_layer(connections, current_layers):
 
     mapped_comps = list(it.chain.from_iterable(current_layers))

@@ -20,6 +20,8 @@ h = Clock('Clk1')
 
 i = NotGate('Not1')
 
+j = Mux('mux1')
+
 connection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e], h: [], i: [a]}
 
 
@@ -58,3 +60,12 @@ def test_organizer():
     layers = organize_comps(connection_dict)
 
     assert layers == [[a, b, c, h], [d, e, i], [g, f]]
+
+
+def test_mux():
+
+    j.output([1, 1, 0, 0, 1, 1])
+
+    assert j.out == 1
+
+
