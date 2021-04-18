@@ -46,15 +46,15 @@ def test_gate():
 
     outputs = []
 
-    gate = g
+    gate = i
 
-    for input_list in [[0, 0], [0, 1], [1, 0], [1, 1]]:
+    for input_list in [[0], [1]]:
 
         gate.output(input_list)
 
         outputs.append(gate.out)
 
-    assert outputs == [1, 0, 0, 0]
+    assert outputs == [1, 0]
 
 
 def test_organizer():

@@ -22,7 +22,7 @@ class Gate:
 
         output_type = {'and': all(input_list), 'nand': input_list.count(0) >= 1,
                        'or': input_list.count(1) >= 1, 'nor': input_list.count(1) == 0,
-                       'xor': input_list.count(1) % 2 != 0, 'not': input_list == [0]}.pop(self.gate_type)
+                       'xor': input_list.count(1) % 2 != 0}.pop(self.gate_type)
 
         if output_type:
 
@@ -34,6 +34,7 @@ class Gate:
 
 
 class AndGate(Comps):
+    """ """
 
     def output(self, input_list):
 
@@ -101,13 +102,7 @@ class NotGate(Comps):
 
     def output(self, input_list):
 
-        if input_list == 0:
-
-            self.out = 1
-
-        else:
-
-            self.out = 0
+        self.out = int(not input_list[0])
 
 
 class ConstOut(Comps):
@@ -122,13 +117,7 @@ class Clock(Comps):
 
     def output(self):
 
-        if self.out == 1:
-
-            self.out = 0
-
-        else:
-
-            self.out = 1
+        self.out = int(not self.out)
 
 
 class Mux(Comps):
