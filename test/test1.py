@@ -22,6 +22,8 @@ i = NotGate('Not1')
 
 j = Mux('mux1')
 
+k = Switch('swt1')
+
 connection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e], h: [], i: [a]}
 
 
@@ -64,8 +66,31 @@ def test_organizer():
 
 def test_mux():
 
-    j.output([1, 1, 0, 0, 1, 1])
+    outputs = []
 
-    assert j.out == 1
+    comp = j
+
+    for inputs in [[1, 2, 3, 4, 0, 0], [1, 2, 3, 4, 1, 0], [1, 2, 3, 4, 0, 1], [1, 2, 3, 4, 1, 1]]:
+
+        comp.output(inputs)
+
+        outputs.append(comp.out)
+
+    assert outputs == [1, 2, 3, 4]
+
+
+def test_switch():
+
+    outputs = []
+
+    comp = k
+
+    for inputs in [[1, 0], [1, 1], [0, 1, 0], [0, 1, 1]]:
+
+        comp.output(inputs)
+
+        outputs.append(comp.out)
+
+    assert outputs == [0, 1, 0, 1]
 
 

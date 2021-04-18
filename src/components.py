@@ -134,12 +134,8 @@ class Clock(Comps):
 class Mux(Comps):
 
     def output(self, input_list):
-        input_0 = input_list[0]
-        input_1 = input_list[1]
-        input_2 = input_list[2]
-        input_3 = input_list[3]
-        mode_0 = input_list[4]
-        mode_1 = input_list[5]
+
+        [input_0, input_1, input_2, input_3, mode_0, mode_1] = input_list
 
         if mode_1 == 0 and mode_0 == 0:
 
@@ -159,7 +155,9 @@ class Mux(Comps):
 
 
 class Switch(Comps):
+
     def output(self, input_list):
+
         if len(input_list) == 2:
             input_0 = input_list[0]
             mode = input_list[1]
@@ -167,6 +165,7 @@ class Switch(Comps):
                 self.out = input_0
             else:
                 pass
+
         else:
             input_0 = input_list[0]
             input_1 = input_list[1]
