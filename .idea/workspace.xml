@@ -41,7 +41,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/Documents/UNI DOCS/Cuarto Año 2020 - 2021/Segundo Semestre 2020 - 2021/Rumarino/Project files/test_temp.py" />
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test1.test_organizer">
+  <component name="RunManager" selected="Python tests.pytest for test1.test_switch">
     <configuration name="pytest for test1.test_clock" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="LogicSimulator" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -106,7 +106,7 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest in test1.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test1.test_switch" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="LogicSimulator" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -118,17 +118,17 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/test1.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <option name="_new_target" value="&quot;test1.test_switch&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest for test1.test_switch" />
         <item itemvalue="Python tests.pytest for test1.test_organizer" />
         <item itemvalue="Python tests.pytest for test1.test_gate" />
         <item itemvalue="Python tests.pytest for test1.test_clock" />
         <item itemvalue="Python tests.pytest for test1.test_mux" />
-        <item itemvalue="Python tests.pytest in test1.py" />
       </list>
     </recent_temporary>
   </component>

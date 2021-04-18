@@ -19,7 +19,7 @@ g = NorGate('Nor1')
 h = Clock('Clk1')
 
 i = NotGate('Not1')
-
+k = Switch('Switch1')
 connection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e], h: [], i: [a]}
 
 
@@ -58,3 +58,6 @@ def test_organizer():
     layers = organize_comps(connection_dict)
 
     assert layers == [[a, b, c, h], [d, e, i], [g, f]]
+def test_switch():
+    k.output([0,1])
+    assert k.out == 0
