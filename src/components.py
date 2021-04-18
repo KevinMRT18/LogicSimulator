@@ -134,7 +134,6 @@ class Clock(Comps):
 class Mux(Comps):
 
     def output(self, input_list):
-
         input_0 = input_list[0]
         input_1 = input_list[1]
         input_2 = input_list[2]
