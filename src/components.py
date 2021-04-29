@@ -1,6 +1,7 @@
 import itertools as it
 
 
+# this is a class for components in general
 class Comps:
 
     def __init__(self, name):
@@ -19,18 +20,20 @@ class Gate:
         self.out = 0
 
     def output(self, input_list):
+        return int({'and': all(input_list),
+                'nand': not all(input_list),
+                'or': any(input_list),
+                'nor': not any(input_list),
+                'xor': input_list.count(1) % 2 != 0
+                }[self.gate_type])
 
-        output_type = {'and': all(input_list), 'nand': input_list.count(0) >= 1,
-                       'or': input_list.count(1) >= 1, 'nor': input_list.count(1) == 0,
-                       'xor': input_list.count(1) % 2 != 0}.pop(self.gate_type)
-
-        if output_type:
-
-            self.out = 1
-
-        else:
-
-            self.out = 0
+# if output_type:
+#
+#     self.out = 1
+#
+# else:
+#
+#     self.out = 0
 
 
 class AndGate(Comps):
@@ -101,7 +104,6 @@ class XorGate(Comps):
 class NotGate(Comps):
 
     def output(self, input_list):
-
         self.out = int(not input_list[0])
 
 
@@ -116,7 +118,6 @@ class ConstOut(Comps):
 class Clock(Comps):
 
     def output(self):
-
         self.out = int(not self.out)
 
 
@@ -165,8 +166,19 @@ class Switch(Comps):
                 self.out = input_0
 
 
-def _create_layer(connections, current_layers):
+class UR(Comps):
+    def output(self, input_list):
+        input_0 = input_list[0]
+        input_1 = input_list[1]
+        input_2 = input_list[2]
+        input_3 = input_list[3]
+        data_in = input_list[4]
+        clock = input_list[5]
+        mode_1 = input_list[6]
+        mode_0 = input_list[7]
 
+
+def _create_layer(connections, current_layers):
     mapped_comps = list(it.chain.from_iterable(current_layers))
 
     layer = []
@@ -176,14 +188,12 @@ def _create_layer(connections, current_layers):
         if comp not in layer \
                 and comp not in mapped_comps \
                 and all(input_comp in mapped_comps for input_comp in input_comps):
-
             layer.append(comp)
 
     return layer
 
 
 def organize_comps(connections):
-
     layers = [[comp for comp in connections if connections[comp] == []]]
 
     comp_count = len(layers[0])

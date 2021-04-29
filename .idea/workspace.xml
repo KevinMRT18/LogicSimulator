@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="Tests for Mux and Switch added.">
+    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="Added Switch">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/components.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test1.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,7 +19,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -41,8 +39,9 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/Documents/UNI DOCS/Cuarto Año 2020 - 2021/Segundo Semestre 2020 - 2021/Rumarino/Project files/test_temp.py" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test1.test_gate">
+  <component name="RunManager" selected="Python tests.pytest for test1.test_clock">
     <configuration name="pytest for test1.test_clock" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="LogicSimulator" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -125,11 +124,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.pytest for test1.test_gate" />
         <item itemvalue="Python tests.pytest for test1.test_clock" />
-        <item itemvalue="Python tests.pytest for test1.test_mux" />
         <item itemvalue="Python tests.pytest for test1.test_switch" />
         <item itemvalue="Python tests.pytest for test1.test_organizer" />
+        <item itemvalue="Python tests.pytest for test1.test_gate" />
+        <item itemvalue="Python tests.pytest for test1.test_mux" />
       </list>
     </recent_temporary>
   </component>
@@ -177,35 +176,7 @@
       <option name="project" value="LOCAL" />
       <updated>1618268634484</updated>
     </task>
-    <task id="LOCAL-00006" summary="Output method of the Gate class modified.&#10;&#10;Clock comp added. &#10;&#10;Tests for most gates, Clock and comp organizer added to test1">
-      <created>1618449228751</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1618449228751</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Mux and Switch">
-      <created>1618778412934</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1618778412934</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Mux and Switch added together">
-      <created>1618778478124</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1618778478124</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Tests for Mux and Switch added.">
-      <created>1618780453812</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1618780453812</updated>
-    </task>
-    <option name="localTasksCounter" value="10" />
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -225,10 +196,6 @@
     <MESSAGE value="All gates are now a subclass of Comps." />
     <MESSAGE value="The repr() function is no longer used." />
     <MESSAGE value="Generalized Gates" />
-    <MESSAGE value="Output method of the Gate class modified.&#10;&#10;Clock comp added. &#10;&#10;Tests for most gates, Clock and comp organizer added to test1" />
-    <MESSAGE value="Mux and Switch" />
-    <MESSAGE value="Mux and Switch added together" />
-    <MESSAGE value="Tests for Mux and Switch added." />
-    <option name="LAST_COMMIT_MESSAGE" value="Tests for Mux and Switch added." />
+    <option name="LAST_COMMIT_MESSAGE" value="Generalized Gates" />
   </component>
 </project>
