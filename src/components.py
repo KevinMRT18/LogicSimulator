@@ -256,16 +256,28 @@ class Switch(Comps):
                 self.out = input_0
 
 
-class UR(Comps):
-    def output(self, input_list):
-        input_0 = input_list[0]
-        input_1 = input_list[1]
-        input_2 = input_list[2]
-        input_3 = input_list[3]
-        data_in = input_list[4]
-        clock = input_list[5]
-        mode_1 = input_list[6]
-        mode_0 = input_list[7]
+class USR(Comps):
+    def __init__(self, name, current_state):
+        super().__init__(name)
+
+        self.current_state = current_state
+    def output(self, input_0, input_1, input_2, input_3, data_in, clock, mode_1, mode_0 ):
+        self.state = [input_0, input_1, input_2, input_3]
+
+        if clock == 1:
+
+            if mode_1 == 1 and mode_0 ==1:
+                self.current_state = self.state
+                self.out = self.current_state
+            elif mode_1 == 1 and mode_0 == 0:
+                self.out = self.current_state[0]
+                self.current_state = [self.current_state[1], self.current_state[2], self.current_state[3], data_in]
+            elif mode_1 == 0 and mode_0 == 1:
+                self.out = self.current_state[3]
+                self.current_state = [data_in, self.current_state[1], self.current_state[2], self.current_state[3]]
+            else:
+                self.out= self.current_state
+
 
 
 def _create_layer(connections, current_layers):
@@ -298,3 +310,4 @@ def organize_comps(connections):
         comp_count += len(new_layer)
 
     return layers
+

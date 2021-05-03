@@ -23,6 +23,7 @@ i = NotGate('Not1')
 j = Mux('mux1')
 
 k = Switch('swt1')
+l = USR('usr1',[0,1,0,1])
 
 connection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e], h: [], i: [a]}
 
@@ -103,3 +104,10 @@ def test_switch():
     assert outputs == [0, 1, 0, 1]
 
 
+def test_usr():
+
+    comp = l
+    inputs = [1,1,1,1,0,1,0,0]
+    comp.output(*inputs)
+    print(comp.out)
+    assert comp.out == [0,1,0,1]
