@@ -85,7 +85,7 @@ def test_mux():
     comp = j
 
     for inputs in [[1, 2, 3, 4, 0, 0], [1, 2, 3, 4, 1, 0], [1, 2, 3, 4, 0, 1], [1, 2, 3, 4, 1, 1]]:
-        comp.output(inputs)
+        comp.output(*inputs)
         outputs.append(comp.out)
 
     assert outputs == [1, 2, 3, 4]

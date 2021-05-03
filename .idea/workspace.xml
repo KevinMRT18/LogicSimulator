@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="Clock and Not modification.">
+    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="Small changes and some documentation.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/components.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test1.py" afterDir="false" />
@@ -42,7 +42,7 @@
     <property name="last_opened_file_path" value="$USER_HOME$/Documents/UNI DOCS/Cuarto Año 2020 - 2021/Segundo Semestre 2020 - 2021/Rumarino/Project files/test_temp.py" />
     <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test1.test_gates">
+  <component name="RunManager" selected="Python tests.pytest for test1.test_mux">
     <configuration name="pytest for test1.test_clock" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="LogicSimulator" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -59,22 +59,6 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test1.test_gate" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="LogicSimulator" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test1.test_gate&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
     <configuration name="pytest for test1.test_gates" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="LogicSimulator" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -88,6 +72,22 @@
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;test1.test_gates&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test1.test_mux" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="LogicSimulator" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test1.test_mux&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -125,11 +125,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest for test1.test_mux" />
         <item itemvalue="Python tests.pytest for test1.test_gates" />
         <item itemvalue="Python tests.pytest for test1.test_clock" />
         <item itemvalue="Python tests.pytest for test1.test_switch" />
         <item itemvalue="Python tests.pytest for test1.test_organizer" />
-        <item itemvalue="Python tests.pytest for test1.test_gate" />
       </list>
     </recent_temporary>
   </component>
@@ -177,7 +177,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618268634484</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Small changes and some documentation.">
+      <created>1620060286185</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1620060286185</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -197,6 +204,7 @@
     <MESSAGE value="All gates are now a subclass of Comps." />
     <MESSAGE value="The repr() function is no longer used." />
     <MESSAGE value="Generalized Gates" />
-    <option name="LAST_COMMIT_MESSAGE" value="Generalized Gates" />
+    <MESSAGE value="Small changes and some documentation." />
+    <option name="LAST_COMMIT_MESSAGE" value="Small changes and some documentation." />
   </component>
 </project>

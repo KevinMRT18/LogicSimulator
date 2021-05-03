@@ -72,7 +72,7 @@ class NandGate(Comps):
      1  1 │   0
     """
 
-    def output(self, input_list):
+    def output(self, *input_list):
 
         if input_list.count(0) >= 1:
             self.out = 1
@@ -97,7 +97,7 @@ class OrGate(Comps):
      1  1 │   1
     """
 
-    def output(self, input_list):
+    def output(self, *input_list):
 
         if input_list.count(1) >= 1:
             self.out = 1
@@ -122,7 +122,7 @@ class NorGate(Comps):
      1  1 │   0
     """
 
-    def output(self, input_list):
+    def output(self, *input_list):
 
         if input_list.count(1) == 0:
             self.out = 1
@@ -148,7 +148,7 @@ class XorGate(Comps):
      1  1 │   0
     """
 
-    def output(self, input_list):
+    def output(self, *input_list):
 
         if input_list.count(1) % 2 != 0:
             self.out = 1
@@ -171,7 +171,7 @@ class NotGate(Comps):
      1 │   0
     """
 
-    def output(self, input_list):
+    def output(self, *input_list):
         self.out = int(not input_list[0])
 
 
@@ -215,9 +215,7 @@ class Mux(Comps):
      1  1 │ Input 3
     """
 
-    def output(self, input_list):
-
-        [input_0, input_1, input_2, input_3, mode_0, mode_1] = input_list
+    def output(self, input_0, input_1, input_2, input_3, mode_0, mode_1):
 
         if mode_1 == 0 and mode_0 == 0:
 
