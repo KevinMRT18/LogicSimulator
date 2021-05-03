@@ -7,8 +7,9 @@ class Comps:
     the object with a name and the self.out value of 0.
     """
 
-    def __init__(self, name):
+    def __init__(self, name, initial_state):
         self.comp_name = name
+        self.initial_state = initial_state
         self.out = 0
 
     def __repr__(self):
@@ -235,21 +236,32 @@ class Mux(Comps):
 
 
 class Switch(Comps):
+    """
+    This class defines objects with an output method that simulates the
+    behavior of the Switch component. When the component receives two inputs,
+    it behaves like a switch where a mode input of (1) passes the input value
+    directly to the output. A mode input of (0) blocks the pass and keeps the
+    last output value saved.
 
-    def output(self, input_list):
+     S mode │ output
+    ────────┼───────
+     0   1  │   0
+     1   1  │   0
 
-        if len(input_list) == 2:
-            input_0 = input_list[0]
-            mode = input_list[1]
+    When the component receives three inputs, the mode selection input selects
+    one of the two available input values. If the mode is (0) the input_0 goes
+    to the output. Otherwise if the mode is (1), the input_1 goes to the output.
+    """
+
+    def output(self, input_0, mode, input_1=None):
+
+        if input_1 == None:
             if mode == 1:
                 self.out = input_0
             else:
                 pass
 
         else:
-            input_0 = input_list[0]
-            input_1 = input_list[1]
-            mode = input_list[2]
             if mode == 1:
                 self.out = input_1
             else:

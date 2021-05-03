@@ -97,8 +97,8 @@ def test_switch():
     outputs = []
     comp = k
 
-    for inputs in [[1, 0], [1, 1], [0, 1, 0], [0, 1, 1]]:
-        comp.output(inputs)
+    for inputs in [[1, 0], [1, 1], [0, 0, 1], [0, 1, 1]]:
+        comp.output(*inputs)
         outputs.append(comp.out)
 
     assert outputs == [0, 1, 0, 1]
