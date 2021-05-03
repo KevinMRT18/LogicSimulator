@@ -1,8 +1,11 @@
 import itertools as it
 
 
-# this is a class for components in general
 class Comps:
+    """
+    This is a base class for the some of the available components that initializes
+    the object with a name and the self.out value of 0.
+    """
 
     def __init__(self, name):
         self.comp_name = name
@@ -20,81 +23,134 @@ class Gate:
         self.out = 0
 
     def output(self, input_list):
-        return int({'and': all(input_list),
-                'nand': not all(input_list),
-                'or': any(input_list),
-                'nor': not any(input_list),
-                'xor': input_list.count(1) % 2 != 0
-                }[self.gate_type])
-
-# if output_type:
-#
-#     self.out = 1
-#
-# else:
-#
-#     self.out = 0
+        self.out = int({'and': all(input_list),
+                        'nand': not all(input_list),
+                        'or': any(input_list),
+                        'nor': not any(input_list),
+                        'xor': input_list.count(1) % 2 != 0
+                        }[self.gate_type])
 
 
 class AndGate(Comps):
-    """ """
+    """
+    This class defines objects with the output method that simulates the behavior of
+    the AND Gate. If all the input values are (1) the output will be a (1). Otherwise,
+    if there is at least one zero as an input, the output will be a (0).
 
-    def output(self, input_list):
+    The two input truth table for the AND Gate is:
+
+    S1 S0 │ output
+    ──────┼───────
+     0  0 │   0
+     0  1 │   0
+     1  0 │   0
+     1  1 │   1
+    """
+
+    def output(self, *input_list):
 
         if all(input_list):
-
             self.out = 1
 
         else:
-
             self.out = 0
 
 
 class NandGate(Comps):
+    """
+    This class defines objects with the output method that simulates the behavior of
+    the NAND Gate. If the at least of the input values is (0), the output will be (1).
+    Otherwise, if all inputs are (1), the output will be (0).
+
+    The two input truth table for the NAND Gate is:
+
+    S1 S0 │ output
+    ──────┼───────
+     0  0 │   1
+     0  1 │   1
+     1  0 │   1
+     1  1 │   0
+    """
 
     def output(self, input_list):
 
         if input_list.count(0) >= 1:
-
             self.out = 1
 
         else:
-
             self.out = 0
 
 
 class OrGate(Comps):
+    """
+    This class defines objects with the output method that simulates the behavior of
+    the OR Gate. If at least one of the inputs in a (1), the output will be a (1).
+    Otherwise, if all the inputs are (0), the output will be (0).
+
+    The two input truth table for the OR Gate is:
+
+    S1 S0 │ output
+    ──────┼───────
+     0  0 │   0
+     0  1 │   1
+     1  0 │   1
+     1  1 │   1
+    """
 
     def output(self, input_list):
 
         if input_list.count(1) >= 1:
-
             self.out = 1
 
         else:
-
             self.out = 0
 
 
 class NorGate(Comps):
+    """
+    This class defines objects with the output method that simulates the behavior of
+    the NOR Gate. If all the input values are (0), the output will be (1). Otherwise,
+    at least one of the inputs is (1), the output will be (0).
+
+    The two input truth table for the NOR Gate is:
+
+    S1 S0 │ output
+    ──────┼───────
+     0  0 │   1
+     0  1 │   0
+     1  0 │   0
+     1  1 │   0
+    """
 
     def output(self, input_list):
 
         if input_list.count(1) == 0:
-
             self.out = 1
 
         else:
-
             self.out = 0
 
 
 class XorGate(Comps):
+    """
+    This class defines objects with the output method that simulates the behavior
+    of the XOR Gate. If the number of inputs that are (1) is odd, the output will
+    be (1). Otherwise, if the number of inputs that are (1) is even, the output
+    will be (0).
+
+    The two input truth table for the XOR Gate is:
+
+    S1 S0 │ output
+    ──────┼───────
+     0  0 │   0
+     0  1 │   1
+     1  0 │   1
+     1  1 │   0
+    """
 
     def output(self, input_list):
 
         if input_list.count(1) % 2 != 0:
-
             self.out = 1
 
         else:
@@ -102,12 +158,28 @@ class XorGate(Comps):
 
 
 class NotGate(Comps):
+    """
+    This class defines objects with the output method that simulates the
+    behavior of the NOT Gate. If the input is a (0) the output is will be a
+    (1) or if the input is a (1) the output will be a (0).
+
+    The truth table for the NOT Gate is:
+
+     S │ output
+    ───┼───────
+     0 │   1
+     1 │   0
+    """
 
     def output(self, input_list):
         self.out = int(not input_list[0])
 
 
 class ConstOut(Comps):
+    """
+    This class defines objects that will provide a fixed output, either
+    a (0) or a (1), throughout the simulation.
+    """
 
     def __init__(self, name, output):
         super().__init__(name)
@@ -116,12 +188,32 @@ class ConstOut(Comps):
 
 
 class Clock(Comps):
+    """
+    This class defines objects with an output method that will change
+    the output value from (1) to (0) or from (0) to (1) on all simulation
+    runs.
+    """
 
     def output(self):
         self.out = int(not self.out)
 
 
 class Mux(Comps):
+    """
+    This class defines objects with an output method that simulates the
+    behavior of the MUX component. This component will accept 6 inputs:
+    2 for mode selection and 4 input values. The mode selection inputs
+    determine which of the 4 input values goes to the output.
+
+    This is the mode selection table:
+
+    S1 S0 │ output
+    ──────┼────────
+     0  0 │ Input 0
+     0  1 │ Input 1
+     1  0 │ Input 2
+     1  1 │ Input 3
+    """
 
     def output(self, input_list):
 

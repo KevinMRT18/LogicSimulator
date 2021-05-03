@@ -26,6 +26,8 @@ k = Switch('swt1')
 
 connection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e], h: [], i: [a]}
 
+gate_outputs = {'and': [0, 0, 0, 1], 'or': [0, 1, 1, 1], 'nand': [1, 1, 1, 0], 'nor': [1, 0, 0, 0], 'xor': [0, 1, 1, 0]}
+
 
 def test_clock():
 
@@ -64,16 +66,26 @@ def test_organizer():
     assert layers == [[a, b, c, h], [d, e, i], [g, f]]
 
 
+def test_gates():
+
+    outputs = []
+    comp = e
+    gate_type = 'and'
+
+    for inputs in [[0, 0], [0, 1], [1, 0], [1, 1]]:
+        comp.output(*inputs)
+        outputs.append(comp.out)
+
+    assert outputs == gate_outputs[gate_type]
+
+
 def test_mux():
 
     outputs = []
-
     comp = j
 
     for inputs in [[1, 2, 3, 4, 0, 0], [1, 2, 3, 4, 1, 0], [1, 2, 3, 4, 0, 1], [1, 2, 3, 4, 1, 1]]:
-
         comp.output(inputs)
-
         outputs.append(comp.out)
 
     assert outputs == [1, 2, 3, 4]
@@ -82,13 +94,10 @@ def test_mux():
 def test_switch():
 
     outputs = []
-
     comp = k
 
     for inputs in [[1, 0], [1, 1], [0, 1, 0], [0, 1, 1]]:
-
         comp.output(inputs)
-
         outputs.append(comp.out)
 
     assert outputs == [0, 1, 0, 1]
