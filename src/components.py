@@ -7,9 +7,8 @@ class Comps:
     the object with a name and the self.out value of 0.
     """
 
-    def __init__(self, name, initial_state):
+    def __init__(self, name):
         self.comp_name = name
-        self.initial_state = initial_state
         self.out = 0
 
     def __repr__(self):
@@ -246,50 +245,60 @@ class Switch(Comps):
      S mode │ output
     ────────┼───────
      0   1  │   0
-     1   1  │   0
+     1   1  │   1
+     0   0  │   1
+     0   1  │   0
+
 
     When the component receives three inputs, the mode selection input selects
     one of the two available input values. If the mode is (0) the input_0 goes
     to the output. Otherwise if the mode is (1), the input_1 goes to the output.
+
+     S1 S0  mode │ output
+    ─────────────┼───────
+     1   0   0   │   0
+     1   0   1   │   1
+
     """
 
     def output(self, input_0, mode, input_1=None):
 
-        if input_1 == None:
-            if mode == 1:
-                self.out = input_0
-            else:
-                pass
-
-        else:
+        if input_1:
             if mode == 1:
                 self.out = input_1
             else:
                 self.out = input_0
 
+        else:
+            if mode == 1:
+                self.out = input_0
+            else:
+                pass
+
 
 class USR(Comps):
-    def __init__(self, name, current_state):
+    def __init__(self, name, initial_state):
         super().__init__(name)
+        self.current_state = initial_state
 
-        self.current_state = current_state
-    def output(self, input_0, input_1, input_2, input_3, data_in, clock, mode_1, mode_0 ):
-        self.state = [input_0, input_1, input_2, input_3]
+    def output(self, mode_1, mode_0, clock, data_in=None, *parallel_inputs):
 
         if clock == 1:
 
-            if mode_1 == 1 and mode_0 ==1:
-                self.current_state = self.state
+            if mode_1 == 1 and mode_0 == 1:
                 self.out = self.current_state
+                self.current_state = list(parallel_inputs)
+
             elif mode_1 == 1 and mode_0 == 0:
                 self.out = self.current_state[0]
                 self.current_state = [self.current_state[1], self.current_state[2], self.current_state[3], data_in]
+
             elif mode_1 == 0 and mode_0 == 1:
                 self.out = self.current_state[3]
-                self.current_state = [data_in, self.current_state[1], self.current_state[2], self.current_state[3]]
-            else:
-                self.out= self.current_state
+                self.current_state = [data_in, self.current_state[0], self.current_state[1], self.current_state[2]]
 
+            else:
+                pass
 
 
 def _create_layer(connections, current_layers):

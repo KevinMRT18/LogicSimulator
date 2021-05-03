@@ -1,5 +1,6 @@
 # import LogicSimulator.src as comps
 from src.components import *
+from src.system import *
 import pytest
 
 a = ConstOut('Cst1', 0)
@@ -23,7 +24,10 @@ i = NotGate('Not1')
 j = Mux('mux1')
 
 k = Switch('swt1')
-l = USR('usr1',[0,1,0,1])
+
+l = USR('usr1', [0, 1, 0, 1])
+
+m = Gate('and2', 'and')
 
 connection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e], h: [], i: [a]}
 
@@ -49,15 +53,15 @@ def test_gate():
 
     outputs = []
 
-    gate = i
+    gate = m
 
-    for input_list in [[0], [1]]:
+    for input_list in [[0, 0], [0, 1], [1, 0], [1, 1]]:
 
         gate.output(input_list)
 
         outputs.append(gate.out)
 
-    assert outputs == [1, 0]
+    assert outputs == [0, 0, 0, 1]
 
 
 def test_organizer():
@@ -106,8 +110,17 @@ def test_switch():
 
 def test_usr():
 
+    outputs = []
+    states = []
     comp = l
-    inputs = [1,1,1,1,0,1,0,0]
-    comp.output(*inputs)
-    print(comp.out)
-    assert comp.out == [0,1,0,1]
+    for inputs in [[0, 0, 1, 2], [0, 1, 1, 2], [1, 0, 1, 3], [1, 1, 1, None, 1, 1, 1, 1],
+                   [1, 1, 0, None, 1, 1, 1, 1]]:
+
+        comp.output(*inputs)
+        outputs.append(comp.out)
+        states.append(comp.current_state)
+
+    assert outputs == [0, 1, 2, [0, 1, 0, 3], [0, 1, 0, 3]]
+    assert states == [[0, 1, 0, 1], [2, 0, 1, 0], [0, 1, 0, 3], [1, 1, 1, 1], [1, 1, 1, 1]]
+
+
