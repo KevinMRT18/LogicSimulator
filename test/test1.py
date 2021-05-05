@@ -133,6 +133,5 @@ def test_system():
 
     assert sys.layers == [[a, b, c, h], [d, e, i, l], [g, f]]
     assert sys.sys_runs == 5
-    assert sys.text_file == 'test.txt'
     assert sys.mapped_comps == [a, b, c, h, d, e, i, l, g, f]
 

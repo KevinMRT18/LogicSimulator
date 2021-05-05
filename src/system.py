@@ -38,14 +38,14 @@ class LogicSystem:
 
         self.connections = connections
         self.sys_runs = sys_runs
-        self.text_file = open('{}.format', 'w+')
+        self.text_file = open('{}.txt'.format(file_name), 'w+')
         self.layers = self.organize_comps(self.connections)
         self.mapped_comps = list(it.chain.from_iterable(self.layers))
 
     def run_system(self):
 
         run = 0
-        stop = 0
+        # stop = 0
         while run < self.sys_runs:
 
             for comp in self.mapped_comps:
@@ -65,14 +65,13 @@ class LogicSystem:
                 #     comp.output(input_values)
 
                 if not isinstance(comp, ConstOut):
-                    comp.output(input_values)
+                    comp.output(*input_values)
 
                 else:
                     pass
 
-                self.text_file.write('{}:{}\n'.format(comp, comp.out))
-
             run += 1
+
         self.text_file.close()
 
 
