@@ -124,7 +124,7 @@ def test_usr():
     assert states == [[0, 1, 0, 1], [2, 0, 1, 0], [0, 1, 0, 3], [1, 1, 1, 1], [1, 1, 1, 1]]
 
 
-sys = LogicSystem(connection_dict, 5, 'test')
+sys = LogicSystem(connection_dict, 10, 'test')
 
 
 def test_system():
@@ -132,6 +132,6 @@ def test_system():
     sys.run_system()
 
     assert sys.layers == [[a, b, c, h], [d, e, i, l], [g, f]]
-    assert sys.sys_runs == 5
+    assert sys.sys_runs == 10
     assert sys.mapped_comps == [a, b, c, h, d, e, i, l, g, f]
 

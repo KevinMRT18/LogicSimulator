@@ -73,5 +73,3 @@ class LogicSystem:
             run += 1
 
         self.text_file.close()
-
-
