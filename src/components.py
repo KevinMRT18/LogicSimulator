@@ -207,12 +207,12 @@ class Mux(Comps):
 
     This is the mode selection table:
 
-    S1 S0 │ output
-    ──────┼────────
-     0  0 │ Input 0
-     0  1 │ Input 1
-     1  0 │ Input 2
-     1  1 │ Input 3
+    mode_1 mode_0 │ output
+    ──────────────┼────────
+      0      0    │ Input 0
+      0      1    │ Input 1
+      1      0    │ Input 2
+      1      1    │ Input 3
     """
 
     def output(self, input_0, input_1, input_2, input_3, mode_0, mode_1):
@@ -264,19 +264,35 @@ class Switch(Comps):
     def output(self, input_0, mode, input_1=None):
 
         if input_1:
-            if mode == 1:
+            if mode:
                 self.out = input_1
             else:
                 self.out = input_0
 
         else:
-            if mode == 1:
+            if mode:
                 self.out = input_0
             else:
                 pass
 
 
 class USR(Comps):
+    """
+    This class defines objects with the output method that simulates the
+    behavior of a 4-Bit Universal Shift Register (USR). Like the real USR,
+    this component has 4 register operating modes determined by two mode
+    selection inputs.
+
+    USR Operating Modes:
+
+     mode_1 mode_0 │ Register Operations
+    ───────────────┼────────────────────
+       0      0    │  No Change
+       0      1    │  Shift Right
+       1      0    │  Shift Left
+       1      1    │  Parallel Load
+    """
+
     def __init__(self, name, initial_state):
         super().__init__(name)
         self.current_state = initial_state

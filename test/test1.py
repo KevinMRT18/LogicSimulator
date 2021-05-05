@@ -29,7 +29,7 @@ l = USR('usr1', [0, 1, 0, 1])
 
 m = Gate('and2', 'and')
 
-connection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e], h: [], i: [a]}
+connection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e], h: [], i: [a], l: [a, b, h]}
 
 gate_outputs = {'and': [0, 0, 0, 1], 'or': [0, 1, 1, 1], 'nand': [1, 1, 1, 0], 'nor': [1, 0, 0, 0], 'xor': [0, 1, 1, 0]}
 
@@ -68,7 +68,7 @@ def test_organizer():
 
     layers = organize_comps(connection_dict)
 
-    assert layers == [[a, b, c, h], [d, e, i], [g, f]]
+    assert layers == [[a, b, c, h], [d, e, i, l], [g, f]]
 
 
 def test_gates():

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/system.py" afterDir="false" />
+    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="USR modifications and testing added. system.py file added to src.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/components.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test1.py" afterDir="false" />
@@ -43,7 +42,7 @@
     <property name="last_opened_file_path" value="$USER_HOME$/Documents/UNI DOCS/Cuarto Año 2020 - 2021/Segundo Semestre 2020 - 2021/Rumarino/Project files/test_temp.py" />
     <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
-  <component name="RunManager" selected="Python tests.pytest in test1.py">
+  <component name="RunManager" selected="Python tests.pytest for test1.test_organizer">
     <configuration name="pytest for test1.test_gate" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="LogicSimulator" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -60,7 +59,7 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test1.test_switch" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test1.test_organizer" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="LogicSimulator" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -72,7 +71,7 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test1.test_switch&quot;" />
+      <option name="_new_target" value="&quot;test1.test_organizer&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -126,11 +125,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest for test1.test_organizer" />
         <item itemvalue="Python tests.pytest in test1.py" />
         <item itemvalue="Python tests.pytest for test1.test_gate" />
         <item itemvalue="Python tests.pytest for test1.test_system" />
         <item itemvalue="Python tests.pytest for test1.test_usr" />
-        <item itemvalue="Python tests.pytest for test1.test_switch" />
       </list>
     </recent_temporary>
   </component>
@@ -192,7 +191,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620065443139</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="USR modifications and testing added. system.py file added to src.">
+      <created>1620071677626</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1620071677626</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -214,6 +220,7 @@
     <MESSAGE value="Generalized Gates" />
     <MESSAGE value="Small changes and some documentation." />
     <MESSAGE value="Switch modified and documentation." />
-    <option name="LAST_COMMIT_MESSAGE" value="Switch modified and documentation." />
+    <MESSAGE value="USR modifications and testing added. system.py file added to src." />
+    <option name="LAST_COMMIT_MESSAGE" value="USR modifications and testing added. system.py file added to src." />
   </component>
 </project>
