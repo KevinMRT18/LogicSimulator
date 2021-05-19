@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="run_system prototype added.">
+    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="Layers and layer comps are printed into the .txt file.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/components.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/system.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +42,7 @@
     <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
   <component name="RunManager" selected="Python tests.pytest for test1.test_system">
-    <configuration name="pytest for test1.test_gate" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test1.test_gates" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="LogicSimulator" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -55,7 +54,23 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test1.test_gate&quot;" />
+      <option name="_new_target" value="&quot;test1.test_gates&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test1.test_mux" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="LogicSimulator" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test1.test_mux&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -107,29 +122,13 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest in test1.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="LogicSimulator" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/test/test1.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python tests.pytest for test1.test_system" />
+        <item itemvalue="Python tests.pytest for test1.test_mux" />
+        <item itemvalue="Python tests.pytest for test1.test_gates" />
         <item itemvalue="Python tests.pytest for test1.test_usr" />
         <item itemvalue="Python tests.pytest for test1.test_organizer" />
-        <item itemvalue="Python tests.pytest in test1.py" />
-        <item itemvalue="Python tests.pytest for test1.test_gate" />
       </list>
     </recent_temporary>
   </component>
@@ -226,7 +225,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620240429827</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Layers and layer comps are printed into the .txt file.">
+      <created>1621455569760</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1621455569760</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -253,6 +259,7 @@
     <MESSAGE value="Posible system added." />
     <MESSAGE value="System continued..." />
     <MESSAGE value="run_system prototype added." />
-    <option name="LAST_COMMIT_MESSAGE" value="run_system prototype added." />
+    <MESSAGE value="Layers and layer comps are printed into the .txt file." />
+    <option name="LAST_COMMIT_MESSAGE" value="Layers and layer comps are printed into the .txt file." />
   </component>
 </project>

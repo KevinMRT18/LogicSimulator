@@ -1,6 +1,13 @@
 import itertools as it
 
 
+class InputNumberError(Exception):
+
+    def __init__(self, comp, required_inputs):
+        self.message = 'The {} component should receive {}.'.format(comp, required_inputs)
+        super().__init__(self.message)
+
+
 class Comps:
     """
     This is a base class for the some of the available components that initializes
@@ -49,6 +56,9 @@ class AndGate(Comps):
 
     def output(self, *input_list):
 
+        if len(input_list) < 2:
+            raise InputNumberError(self.comp_name, '2 or more inputs')
+
         if all(input_list):
             self.out = 1
 
@@ -73,6 +83,9 @@ class NandGate(Comps):
     """
 
     def output(self, *input_list):
+
+        if len(input_list) != 2:
+            raise InputNumberError(self.comp_name, 'only 2 inputs')
 
         if input_list.count(0) >= 1:
             self.out = 1
@@ -99,6 +112,9 @@ class OrGate(Comps):
 
     def output(self, *input_list):
 
+        if len(input_list) < 2:
+            raise InputNumberError(self.comp_name, '2 or more inputs')
+
         if input_list.count(1) >= 1:
             self.out = 1
 
@@ -123,6 +139,9 @@ class NorGate(Comps):
     """
 
     def output(self, *input_list):
+
+        if len(input_list) != 2:
+            raise InputNumberError(self.comp_name, 'only 2 inputs')
 
         if input_list.count(1) == 0:
             self.out = 1
@@ -150,6 +169,9 @@ class XorGate(Comps):
 
     def output(self, *input_list):
 
+        if len(input_list) < 2:
+            raise InputNumberError(self.comp_name, '2 or more inputs')
+
         if input_list.count(1) % 2 != 0:
             self.out = 1
 
@@ -172,6 +194,10 @@ class NotGate(Comps):
     """
 
     def output(self, *input_list):
+
+        if len(input_list) != 1:
+            raise InputNumberError(self.comp_name, 'only 1 input')
+
         self.out = int(not input_list[0])
 
 
@@ -185,7 +211,10 @@ class ConstOut(Comps):
         super().__init__(name)
         self.out = output
 
-    def output(self):
+    def output(self, *input_list):
+        if len(input_list) != 0:
+            raise InputNumberError(self.comp_name, '0 inputs')
+
         pass
 
 
@@ -196,7 +225,10 @@ class Clock(Comps):
     runs.
     """
 
-    def output(self):
+    def output(self, *input_list):
+        if len(input_list) != 0:
+            raise InputNumberError(self.comp_name, '0 inputs')
+
         self.out = int(not self.out)
 
 
