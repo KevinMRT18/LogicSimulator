@@ -51,14 +51,16 @@ class LogicSystem:
 
     def run_system(self):
         self.starting_text()
-        run = 0
+        run = 1
         while run < self.sys_runs:
+            self.text_file.write('Run{}:'.format(run))
             for comp in self.mapped_comps:
 
                 input_comps = self.connections[comp]
                 input_values = [in_comp.out for in_comp in input_comps]
 
                 comp.output(*input_values)
+                self.text_file.write('{} output: {}\n\n'.format(comp.comp_name, comp.out))
 
             run += 1
 
