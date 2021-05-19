@@ -1,0 +1,253 @@
+
+
+Layer 1:
+
+     Cst1     Cst2     Cst3     Clk1
+
+Layer 2:
+
+     Or1     And1     Not1     usr1
+
+Layer 3:
+
+     Nor1     Nand1
+
+-----------------------------------------------------------------
+
+Run0:
+
+Cst1 output: 0 current state:None
+
+Cst2 output: 1 current state:None
+
+Cst3 output: 1 current state:None
+
+Clk1 output: 1 current state:None
+
+Or1 output: 1 current state:None
+
+And1 output: 1 current state:None
+
+Not1 output: 1 current state:None
+
+usr1 output: 1 current state:[None, 0, 1, 0]
+
+Nor1 output: 0 current state:None
+
+Nand1 output: 0 current state:None
+
+-----------------------------------------------------------------
+
+Run1:
+
+Cst1 output: 0 current state:None
+
+Cst2 output: 1 current state:None
+
+Cst3 output: 1 current state:None
+
+Clk1 output: 0 current state:None
+
+Or1 output: 1 current state:None
+
+And1 output: 1 current state:None
+
+Not1 output: 1 current state:None
+
+usr1 output: 1 current state:[None, 0, 1, 0]
+
+Nor1 output: 0 current state:None
+
+Nand1 output: 0 current state:None
+
+-----------------------------------------------------------------
+
+Run2:
+
+Cst1 output: 0 current state:None
+
+Cst2 output: 1 current state:None
+
+Cst3 output: 1 current state:None
+
+Clk1 output: 1 current state:None
+
+Or1 output: 1 current state:None
+
+And1 output: 1 current state:None
+
+Not1 output: 1 current state:None
+
+usr1 output: 0 current state:[None, None, 0, 1]
+
+Nor1 output: 0 current state:None
+
+Nand1 output: 0 current state:None
+
+-----------------------------------------------------------------
+
+Run3:
+
+Cst1 output: 0 current state:None
+
+Cst2 output: 1 current state:None
+
+Cst3 output: 1 current state:None
+
+Clk1 output: 0 current state:None
+
+Or1 output: 1 current state:None
+
+And1 output: 1 current state:None
+
+Not1 output: 1 current state:None
+
+usr1 output: 0 current state:[None, None, 0, 1]
+
+Nor1 output: 0 current state:None
+
+Nand1 output: 0 current state:None
+
+-----------------------------------------------------------------
+
+Run4:
+
+Cst1 output: 0 current state:None
+
+Cst2 output: 1 current state:None
+
+Cst3 output: 1 current state:None
+
+Clk1 output: 1 current state:None
+
+Or1 output: 1 current state:None
+
+And1 output: 1 current state:None
+
+Not1 output: 1 current state:None
+
+usr1 output: 1 current state:[None, None, None, 0]
+
+Nor1 output: 0 current state:None
+
+Nand1 output: 0 current state:None
+
+-----------------------------------------------------------------
+
+Run5:
+
+Cst1 output: 0 current state:None
+
+Cst2 output: 1 current state:None
+
+Cst3 output: 1 current state:None
+
+Clk1 output: 0 current state:None
+
+Or1 output: 1 current state:None
+
+And1 output: 1 current state:None
+
+Not1 output: 1 current state:None
+
+usr1 output: 1 current state:[None, None, None, 0]
+
+Nor1 output: 0 current state:None
+
+Nand1 output: 0 current state:None
+
+-----------------------------------------------------------------
+
+Run6:
+
+Cst1 output: 0 current state:None
+
+Cst2 output: 1 current state:None
+
+Cst3 output: 1 current state:None
+
+Clk1 output: 1 current state:None
+
+Or1 output: 1 current state:None
+
+And1 output: 1 current state:None
+
+Not1 output: 1 current state:None
+
+usr1 output: 0 current state:[None, None, None, None]
+
+Nor1 output: 0 current state:None
+
+Nand1 output: 0 current state:None
+
+-----------------------------------------------------------------
+
+Run7:
+
+Cst1 output: 0 current state:None
+
+Cst2 output: 1 current state:None
+
+Cst3 output: 1 current state:None
+
+Clk1 output: 0 current state:None
+
+Or1 output: 1 current state:None
+
+And1 output: 1 current state:None
+
+Not1 output: 1 current state:None
+
+usr1 output: 0 current state:[None, None, None, None]
+
+Nor1 output: 0 current state:None
+
+Nand1 output: 0 current state:None
+
+-----------------------------------------------------------------
+
+Run8:
+
+Cst1 output: 0 current state:None
+
+Cst2 output: 1 current state:None
+
+Cst3 output: 1 current state:None
+
+Clk1 output: 1 current state:None
+
+Or1 output: 1 current state:None
+
+And1 output: 1 current state:None
+
+Not1 output: 1 current state:None
+
+usr1 output: None current state:[None, None, None, None]
+
+Nor1 output: 0 current state:None
+
+Nand1 output: 0 current state:None
+
+-----------------------------------------------------------------
+
+Run9:
+
+Cst1 output: 0 current state:None
+
+Cst2 output: 1 current state:None
+
+Cst3 output: 1 current state:None
+
+Clk1 output: 0 current state:None
+
+Or1 output: 1 current state:None
+
+And1 output: 1 current state:None
+
+Not1 output: 1 current state:None
+
+usr1 output: None current state:[None, None, None, None]
+
+Nor1 output: 0 current state:None
+
+Nand1 output: 0 current state:None

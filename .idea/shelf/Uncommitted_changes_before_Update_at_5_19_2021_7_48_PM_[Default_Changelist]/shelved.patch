@@ -1,0 +1,19 @@
+Index: src/system.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import itertools as it\r\n\r\n\r\nclass LogicSystem:\r\n\r\n    @staticmethod\r\n    def __create_layer(connections, current_layers):\r\n        mapped_comps = list(it.chain.from_iterable(current_layers))\r\n\r\n        layer = []\r\n\r\n        for comp, input_comps in connections.items():\r\n\r\n            if comp not in layer \\\r\n                    and comp not in mapped_comps \\\r\n                    and all(input_comp in mapped_comps for input_comp in input_comps):\r\n                layer.append(comp)\r\n\r\n        return layer\r\n\r\n    def organize_comps(self, connections):\r\n        layers = [[comp for comp in connections if connections[comp] == []]]\r\n        comp_count = len(layers[0])\r\n        num_of_comps = len(connections)\r\n\r\n        while comp_count != num_of_comps:\r\n            new_layer = self.__create_layer(connections, layers)\r\n            layers.append(new_layer)\r\n            comp_count += len(new_layer)\r\n\r\n        return layers\r\n\r\n    def __init__(self, connections, sys_runs, file_name):\r\n\r\n        self.connections = connections\r\n        self.sys_runs = sys_runs\r\n        self.sys_name = file_name\r\n        self.text_file = open('{}.txt'.format(file_name), 'w+')\r\n        self.layers = self.organize_comps(self.connections)\r\n        self.mapped_comps = list(it.chain.from_iterable(self.layers))\r\n\r\n    def starting_text(self):\r\n        text = ''\r\n\r\n        for layer in range(len(self.layers)):\r\n            text += '\\n\\nLayer {}:\\n\\n'.format(layer+1)\r\n            for comp in self.layers[layer]:\r\n                text += '     {}'.format(comp)\r\n        text += '\\n\\n'\r\n        self.text_file.write(text)\r\n\r\n    def run_system(self):\r\n        self.starting_text()\r\n        run = 1\r\n        while run < self.sys_runs:\r\n            self.text_file.write('Run{}:'.format(run))\r\n            for comp in self.mapped_comps:\r\n\r\n                input_comps = self.connections[comp]\r\n                input_values = [in_comp.out for in_comp in input_comps]\r\n\r\n                comp.output(*input_values)\r\n                self.text_file.write('{} output: {}\\n\\n'.format(comp.comp_name, comp.out))\r\n\r\n            run += 1\r\n\r\n        self.text_file.close()\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/system.py b/src/system.py
+--- a/src/system.py	(revision 85217a1894bce4c3a8c5273e7e04bb8a0eccc6d9)
++++ b/src/system.py	(date 1621467915982)
+@@ -53,7 +53,7 @@
+         self.starting_text()
+         run = 1
+         while run < self.sys_runs:
+-            self.text_file.write('Run{}:'.format(run))
++            self.text_file.write('Run{}:\n\n'.format(run))
+             for comp in self.mapped_comps:
+ 
+                 input_comps = self.connections[comp]

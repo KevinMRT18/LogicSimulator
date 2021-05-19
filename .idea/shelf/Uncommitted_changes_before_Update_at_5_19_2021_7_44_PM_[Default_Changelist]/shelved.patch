@@ -1,0 +1,246 @@
+Index: src/system.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import itertools as it\r\n\r\n\r\nclass LogicSystem:\r\n\r\n    @staticmethod\r\n    def __create_layer(connections, current_layers):\r\n        mapped_comps = list(it.chain.from_iterable(current_layers))\r\n\r\n        layer = []\r\n\r\n        for comp, input_comps in connections.items():\r\n\r\n            if comp not in layer \\\r\n                    and comp not in mapped_comps \\\r\n                    and all(input_comp in mapped_comps for input_comp in input_comps):\r\n                layer.append(comp)\r\n\r\n        return layer\r\n\r\n    def organize_comps(self, connections):\r\n        layers = [[comp for comp in connections if connections[comp] == []]]\r\n        comp_count = len(layers[0])\r\n        num_of_comps = len(connections)\r\n\r\n        while comp_count != num_of_comps:\r\n            new_layer = self.__create_layer(connections, layers)\r\n            layers.append(new_layer)\r\n            comp_count += len(new_layer)\r\n\r\n        return layers\r\n\r\n    def __init__(self, connections, sys_runs, file_name):\r\n\r\n        self.connections = connections\r\n        self.sys_runs = sys_runs\r\n        self.sys_name = file_name\r\n        self.text_file = open('{}.txt'.format(file_name), 'w+')\r\n        self.layers = self.organize_comps(self.connections)\r\n        self.mapped_comps = list(it.chain.from_iterable(self.layers))\r\n\r\n    def starting_text(self):\r\n        text = ''\r\n\r\n        for layer in range(len(self.layers)):\r\n            text += '\\n\\nLayer {}:\\n\\n'.format(layer+1)\r\n            for comp in self.layers[layer]:\r\n                text += '     {}'.format(comp)\r\n        text += '\\n\\n'\r\n        self.text_file.write(text)\r\n\r\n    def run_system(self):\r\n        self.starting_text()\r\n        run = 1\r\n        while run < self.sys_runs:\r\n            self.text_file.write('Run{}:'.format(run))\r\n            for comp in self.mapped_comps:\r\n\r\n                input_comps = self.connections[comp]\r\n                input_values = [in_comp.out for in_comp in input_comps]\r\n\r\n                comp.output(*input_values)\r\n                self.text_file.write('{} output: {}\\n\\n'.format(comp.comp_name, comp.out))\r\n\r\n            run += 1\r\n\r\n        self.text_file.close()\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/system.py b/src/system.py
+--- a/src/system.py	(revision 85217a1894bce4c3a8c5273e7e04bb8a0eccc6d9)
++++ b/src/system.py	(date 1621467795867)
+@@ -53,7 +53,7 @@
+         self.starting_text()
+         run = 1
+         while run < self.sys_runs:
+-            self.text_file.write('Run{}:'.format(run))
++            self.text_file.write('Run{}:\n\n'.format(run))
+             for comp in self.mapped_comps:
+ 
+                 input_comps = self.connections[comp]
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"d949a879-9152-49c3-87b4-383b2930b1cb\" name=\"Default Changelist\" comment=\"InputNumberError created.\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/system.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/system.py\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitSEFilterConfiguration\">\r\n    <file-type-list>\r\n      <filtered-out-file-type name=\"LOCAL_BRANCH\" />\r\n      <filtered-out-file-type name=\"REMOTE_BRANCH\" />\r\n      <filtered-out-file-type name=\"TAG\" />\r\n      <filtered-out-file-type name=\"COMMIT_BY_MESSAGE\" />\r\n    </file-type-list>\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"1qrSuYYYOg01JiEQDsu3R3ZHJ5J\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"SHARE_PROJECT_CONFIGURATION_FILES\" value=\"true\" />\r\n    <property name=\"last_opened_file_path\" value=\"$USER_HOME$/Documents/UNI DOCS/Cuarto Año 2020 - 2021/Segundo Semestre 2020 - 2021/Rumarino/Project files/test_temp.py\" />\r\n    <property name=\"settings.editor.selected.configurable\" value=\"preferences.editor\" />\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Python tests.pytest for test1.test_system\">\r\n    <configuration name=\"pytest for test1.test_gates\" type=\"tests\" factoryName=\"py.test\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"LogicSimulator\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$/test\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"_new_keywords\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_parameters\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_additionalArguments\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_target\" value=\"&quot;test1.test_gates&quot;\" />\r\n      <option name=\"_new_targetType\" value=\"&quot;PYTHON&quot;\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"pytest for test1.test_mux\" type=\"tests\" factoryName=\"py.test\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"LogicSimulator\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$/test\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"_new_keywords\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_parameters\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_additionalArguments\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_target\" value=\"&quot;test1.test_mux&quot;\" />\r\n      <option name=\"_new_targetType\" value=\"&quot;PYTHON&quot;\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"pytest for test1.test_organizer\" type=\"tests\" factoryName=\"py.test\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"LogicSimulator\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$/test\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"_new_keywords\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_parameters\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_additionalArguments\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_target\" value=\"&quot;test1.test_organizer&quot;\" />\r\n      <option name=\"_new_targetType\" value=\"&quot;PYTHON&quot;\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"pytest for test1.test_system\" type=\"tests\" factoryName=\"py.test\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"LogicSimulator\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$/test\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"_new_keywords\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_parameters\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_additionalArguments\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_target\" value=\"&quot;test1.test_system&quot;\" />\r\n      <option name=\"_new_targetType\" value=\"&quot;PYTHON&quot;\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"pytest for test1.test_usr\" type=\"tests\" factoryName=\"py.test\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"LogicSimulator\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$/test\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"_new_keywords\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_parameters\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_additionalArguments\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_target\" value=\"&quot;test1.test_usr&quot;\" />\r\n      <option name=\"_new_targetType\" value=\"&quot;PYTHON&quot;\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Python tests.pytest for test1.test_system\" />\r\n        <item itemvalue=\"Python tests.pytest for test1.test_mux\" />\r\n        <item itemvalue=\"Python tests.pytest for test1.test_gates\" />\r\n        <item itemvalue=\"Python tests.pytest for test1.test_usr\" />\r\n        <item itemvalue=\"Python tests.pytest for test1.test_organizer\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"d949a879-9152-49c3-87b4-383b2930b1cb\" name=\"Default Changelist\" comment=\"\" />\r\n      <created>1617836438596</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1617836438596</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Testing\">\r\n      <created>1617841129766</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1617841129766</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Testing\">\r\n      <created>1617841186462</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1617841186462</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"All gates are now a subclass of Comps.\">\r\n      <created>1617842063124</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1617842063124</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"The repr() function is no longer used.\">\r\n      <created>1617928878620</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1617928878620</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"Generalized Gates\">\r\n      <created>1618268634484</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1618268634484</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"Small changes and some documentation.\">\r\n      <created>1620060286185</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1620060286185</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"Switch modified and documentation.\">\r\n      <created>1620065443139</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1620065443139</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"USR modifications and testing added. system.py file added to src.\">\r\n      <created>1620071677626</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1620071677626</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"Some documentation changes\">\r\n      <created>1620233194136</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1620233194136</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"Posible system added.\">\r\n      <created>1620238348378</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1620238348378</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00011\" summary=\"System continued...\">\r\n      <created>1620239253008</created>\r\n      <option name=\"number\" value=\"00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1620239253008</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00012\" summary=\"run_system prototype added.\">\r\n      <created>1620240429827</created>\r\n      <option name=\"number\" value=\"00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1620240429827</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00013\" summary=\"Layers and layer comps are printed into the .txt file.\">\r\n      <created>1621455569760</created>\r\n      <option name=\"number\" value=\"00013\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1621455569760</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00014\" summary=\"InputNumberError created.\">\r\n      <created>1621464180890</created>\r\n      <option name=\"number\" value=\"00014\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00014\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1621464180890</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"15\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n    <option name=\"oldMeFiltersMigrated\" value=\"true\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Testing\" />\r\n    <MESSAGE value=\"All gates are now a subclass of Comps.\" />\r\n    <MESSAGE value=\"The repr() function is no longer used.\" />\r\n    <MESSAGE value=\"Generalized Gates\" />\r\n    <MESSAGE value=\"Small changes and some documentation.\" />\r\n    <MESSAGE value=\"Switch modified and documentation.\" />\r\n    <MESSAGE value=\"USR modifications and testing added. system.py file added to src.\" />\r\n    <MESSAGE value=\"Some documentation changes\" />\r\n    <MESSAGE value=\"Posible system added.\" />\r\n    <MESSAGE value=\"System continued...\" />\r\n    <MESSAGE value=\"run_system prototype added.\" />\r\n    <MESSAGE value=\"Layers and layer comps are printed into the .txt file.\" />\r\n    <MESSAGE value=\"InputNumberError created.\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"InputNumberError created.\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 85217a1894bce4c3a8c5273e7e04bb8a0eccc6d9)
++++ b/.idea/workspace.xml	(date 1621467832166)
+@@ -1,9 +1,10 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ChangeListManager">
+-    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="InputNumberError created.">
++    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="Tests for Mux and Switch added.">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/system.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/components.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/components.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/test/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test1.py" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -19,6 +20,7 @@
+   </component>
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
++    <option name="UPDATE_TYPE" value="REBASE" />
+   </component>
+   <component name="GitSEFilterConfiguration">
+     <file-type-list>
+@@ -39,10 +41,9 @@
+     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+     <property name="last_opened_file_path" value="$USER_HOME$/Documents/UNI DOCS/Cuarto Año 2020 - 2021/Segundo Semestre 2020 - 2021/Rumarino/Project files/test_temp.py" />
+-    <property name="settings.editor.selected.configurable" value="preferences.editor" />
+   </component>
+-  <component name="RunManager" selected="Python tests.pytest for test1.test_system">
+-    <configuration name="pytest for test1.test_gates" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
++  <component name="RunManager" selected="Python tests.pytest for test1.test_gate">
++    <configuration name="pytest for test1.test_clock" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+       <module name="LogicSimulator" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+       <option name="PARENT_ENVS" value="true" />
+@@ -54,11 +55,11 @@
+       <option name="_new_keywords" value="&quot;&quot;" />
+       <option name="_new_parameters" value="&quot;&quot;" />
+       <option name="_new_additionalArguments" value="&quot;&quot;" />
+-      <option name="_new_target" value="&quot;test1.test_gates&quot;" />
++      <option name="_new_target" value="&quot;test1.test_clock&quot;" />
+       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+       <method v="2" />
+     </configuration>
+-    <configuration name="pytest for test1.test_mux" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
++    <configuration name="pytest for test1.test_gate" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+       <module name="LogicSimulator" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+       <option name="PARENT_ENVS" value="true" />
+@@ -70,11 +71,11 @@
+       <option name="_new_keywords" value="&quot;&quot;" />
+       <option name="_new_parameters" value="&quot;&quot;" />
+       <option name="_new_additionalArguments" value="&quot;&quot;" />
+-      <option name="_new_target" value="&quot;test1.test_mux&quot;" />
++      <option name="_new_target" value="&quot;test1.test_gate&quot;" />
+       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+       <method v="2" />
+     </configuration>
+-    <configuration name="pytest for test1.test_organizer" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
++    <configuration name="pytest for test1.test_mux" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+       <module name="LogicSimulator" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+       <option name="PARENT_ENVS" value="true" />
+@@ -86,11 +87,11 @@
+       <option name="_new_keywords" value="&quot;&quot;" />
+       <option name="_new_parameters" value="&quot;&quot;" />
+       <option name="_new_additionalArguments" value="&quot;&quot;" />
+-      <option name="_new_target" value="&quot;test1.test_organizer&quot;" />
++      <option name="_new_target" value="&quot;test1.test_mux&quot;" />
+       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+       <method v="2" />
+     </configuration>
+-    <configuration name="pytest for test1.test_system" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
++    <configuration name="pytest for test1.test_organizer" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+       <module name="LogicSimulator" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+       <option name="PARENT_ENVS" value="true" />
+@@ -102,11 +103,11 @@
+       <option name="_new_keywords" value="&quot;&quot;" />
+       <option name="_new_parameters" value="&quot;&quot;" />
+       <option name="_new_additionalArguments" value="&quot;&quot;" />
+-      <option name="_new_target" value="&quot;test1.test_system&quot;" />
++      <option name="_new_target" value="&quot;test1.test_organizer&quot;" />
+       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+       <method v="2" />
+     </configuration>
+-    <configuration name="pytest for test1.test_usr" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
++    <configuration name="pytest for test1.test_switch" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+       <module name="LogicSimulator" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+       <option name="PARENT_ENVS" value="true" />
+@@ -118,16 +119,16 @@
+       <option name="_new_keywords" value="&quot;&quot;" />
+       <option name="_new_parameters" value="&quot;&quot;" />
+       <option name="_new_additionalArguments" value="&quot;&quot;" />
+-      <option name="_new_target" value="&quot;test1.test_usr&quot;" />
++      <option name="_new_target" value="&quot;test1.test_switch&quot;" />
+       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+       <method v="2" />
+     </configuration>
+     <recent_temporary>
+       <list>
+-        <item itemvalue="Python tests.pytest for test1.test_system" />
++        <item itemvalue="Python tests.pytest for test1.test_gate" />
++        <item itemvalue="Python tests.pytest for test1.test_clock" />
+         <item itemvalue="Python tests.pytest for test1.test_mux" />
+-        <item itemvalue="Python tests.pytest for test1.test_gates" />
+-        <item itemvalue="Python tests.pytest for test1.test_usr" />
++        <item itemvalue="Python tests.pytest for test1.test_switch" />
+         <item itemvalue="Python tests.pytest for test1.test_organizer" />
+       </list>
+     </recent_temporary>
+@@ -176,70 +177,35 @@
+       <option name="project" value="LOCAL" />
+       <updated>1618268634484</updated>
+     </task>
+-    <task id="LOCAL-00006" summary="Small changes and some documentation.">
+-      <created>1620060286185</created>
++    <task id="LOCAL-00006" summary="Output method of the Gate class modified.&#10;&#10;Clock comp added. &#10;&#10;Tests for most gates, Clock and comp organizer added to test1">
++      <created>1618449228751</created>
+       <option name="number" value="00006" />
+       <option name="presentableId" value="LOCAL-00006" />
+       <option name="project" value="LOCAL" />
+-      <updated>1620060286185</updated>
++      <updated>1618449228751</updated>
+     </task>
+-    <task id="LOCAL-00007" summary="Switch modified and documentation.">
+-      <created>1620065443139</created>
++    <task id="LOCAL-00007" summary="Mux and Switch">
++      <created>1618778412934</created>
+       <option name="number" value="00007" />
+       <option name="presentableId" value="LOCAL-00007" />
+       <option name="project" value="LOCAL" />
+-      <updated>1620065443139</updated>
++      <updated>1618778412934</updated>
+     </task>
+-    <task id="LOCAL-00008" summary="USR modifications and testing added. system.py file added to src.">
+-      <created>1620071677626</created>
++    <task id="LOCAL-00008" summary="Mux and Switch added together">
++      <created>1618778478124</created>
+       <option name="number" value="00008" />
+       <option name="presentableId" value="LOCAL-00008" />
+       <option name="project" value="LOCAL" />
+-      <updated>1620071677626</updated>
++      <updated>1618778478124</updated>
+     </task>
+-    <task id="LOCAL-00009" summary="Some documentation changes">
+-      <created>1620233194136</created>
++    <task id="LOCAL-00009" summary="Tests for Mux and Switch added.">
++      <created>1618780453812</created>
+       <option name="number" value="00009" />
+       <option name="presentableId" value="LOCAL-00009" />
+       <option name="project" value="LOCAL" />
+-      <updated>1620233194136</updated>
+-    </task>
+-    <task id="LOCAL-00010" summary="Posible system added.">
+-      <created>1620238348378</created>
+-      <option name="number" value="00010" />
+-      <option name="presentableId" value="LOCAL-00010" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1620238348378</updated>
++      <updated>1618780453812</updated>
+     </task>
+-    <task id="LOCAL-00011" summary="System continued...">
+-      <created>1620239253008</created>
+-      <option name="number" value="00011" />
+-      <option name="presentableId" value="LOCAL-00011" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1620239253008</updated>
+-    </task>
+-    <task id="LOCAL-00012" summary="run_system prototype added.">
+-      <created>1620240429827</created>
+-      <option name="number" value="00012" />
+-      <option name="presentableId" value="LOCAL-00012" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1620240429827</updated>
+-    </task>
+-    <task id="LOCAL-00013" summary="Layers and layer comps are printed into the .txt file.">
+-      <created>1621455569760</created>
+-      <option name="number" value="00013" />
+-      <option name="presentableId" value="LOCAL-00013" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1621455569760</updated>
+-    </task>
+-    <task id="LOCAL-00014" summary="InputNumberError created.">
+-      <created>1621464180890</created>
+-      <option name="number" value="00014" />
+-      <option name="presentableId" value="LOCAL-00014" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1621464180890</updated>
+-    </task>
+-    <option name="localTasksCounter" value="15" />
++    <option name="localTasksCounter" value="10" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+@@ -259,15 +225,10 @@
+     <MESSAGE value="All gates are now a subclass of Comps." />
+     <MESSAGE value="The repr() function is no longer used." />
+     <MESSAGE value="Generalized Gates" />
+-    <MESSAGE value="Small changes and some documentation." />
+-    <MESSAGE value="Switch modified and documentation." />
+-    <MESSAGE value="USR modifications and testing added. system.py file added to src." />
+-    <MESSAGE value="Some documentation changes" />
+-    <MESSAGE value="Posible system added." />
+-    <MESSAGE value="System continued..." />
+-    <MESSAGE value="run_system prototype added." />
+-    <MESSAGE value="Layers and layer comps are printed into the .txt file." />
+-    <MESSAGE value="InputNumberError created." />
+-    <option name="LAST_COMMIT_MESSAGE" value="InputNumberError created." />
++    <MESSAGE value="Output method of the Gate class modified.&#10;&#10;Clock comp added. &#10;&#10;Tests for most gates, Clock and comp organizer added to test1" />
++    <MESSAGE value="Mux and Switch" />
++    <MESSAGE value="Mux and Switch added together" />
++    <MESSAGE value="Tests for Mux and Switch added." />
++    <option name="LAST_COMMIT_MESSAGE" value="Tests for Mux and Switch added." />
+   </component>
+ </project>
+\ No newline at end of file
