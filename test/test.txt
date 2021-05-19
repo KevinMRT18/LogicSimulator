@@ -251,3 +251,4 @@ usr1 output: None current state:[None, None, None, None]
 Nor1 output: 0 current state:None
 
 Nand1 output: 0 current state:None
+

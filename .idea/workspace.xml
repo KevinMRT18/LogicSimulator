@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="InputNumberError created.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/system.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system.py" afterDir="false" />
-    </list>
+    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="txt file final touches part1" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -232,14 +229,21 @@
       <option name="project" value="LOCAL" />
       <updated>1621455569760</updated>
     </task>
-    <task id="LOCAL-00014" summary="InputNumberError created.">
-      <created>1621464180890</created>
+    <task id="LOCAL-00014" summary="txt file final touches part1">
+      <created>1621466906995</created>
       <option name="number" value="00014" />
       <option name="presentableId" value="LOCAL-00014" />
       <option name="project" value="LOCAL" />
-      <updated>1621464180890</updated>
+      <updated>1621466906995</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="txt file final touches part1">
+      <created>1621466937207</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1621466937207</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -267,7 +271,7 @@
     <MESSAGE value="System continued..." />
     <MESSAGE value="run_system prototype added." />
     <MESSAGE value="Layers and layer comps are printed into the .txt file." />
-    <MESSAGE value="InputNumberError created." />
-    <option name="LAST_COMMIT_MESSAGE" value="InputNumberError created." />
+    <MESSAGE value="txt file final touches part1" />
+    <option name="LAST_COMMIT_MESSAGE" value="txt file final touches part1" />
   </component>
 </project>
