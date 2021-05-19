@@ -1,0 +1,381 @@
+Index: src/system.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import itertools as it\r\n\r\n\r\nclass LogicSystem:\r\n\r\n    @staticmethod\r\n    def __create_layer(connections, current_layers):\r\n        mapped_comps = list(it.chain.from_iterable(current_layers))\r\n\r\n        layer = []\r\n\r\n        for comp, input_comps in connections.items():\r\n\r\n            if comp not in layer \\\r\n                    and comp not in mapped_comps \\\r\n                    and all(input_comp in mapped_comps for input_comp in input_comps):\r\n                layer.append(comp)\r\n\r\n        return layer\r\n\r\n    def organize_comps(self, connections):\r\n        layers = [[comp for comp in connections if connections[comp] == []]]\r\n        comp_count = len(layers[0])\r\n        num_of_comps = len(connections)\r\n\r\n        while comp_count != num_of_comps:\r\n            new_layer = self.__create_layer(connections, layers)\r\n            layers.append(new_layer)\r\n            comp_count += len(new_layer)\r\n\r\n        return layers\r\n\r\n    def __init__(self, connections, sys_runs, file_name):\r\n\r\n        self.connections = connections\r\n        self.sys_runs = sys_runs\r\n        self.sys_name = file_name\r\n        self.text_file = open('{}.txt'.format(file_name), 'w+')\r\n        self.layers = self.organize_comps(self.connections)\r\n        self.mapped_comps = list(it.chain.from_iterable(self.layers))\r\n\r\n    def starting_text(self):\r\n        text = ''\r\n\r\n        for layer in range(len(self.layers)):\r\n            text += '\\n\\nLayer {}:\\n\\n'.format(layer+1)\r\n            for comp in self.layers[layer]:\r\n                text += '     {}'.format(comp)\r\n        text += '\\n\\n'\r\n        self.text_file.write(text)\r\n\r\n    def run_system(self):\r\n        self.starting_text()\r\n        run = 0\r\n        while run < self.sys_runs:\r\n            for comp in self.mapped_comps:\r\n\r\n                input_comps = self.connections[comp]\r\n                input_values = [in_comp.out for in_comp in input_comps]\r\n\r\n                comp.output(*input_values)\r\n\r\n            run += 1\r\n\r\n        self.text_file.close()\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/system.py b/src/system.py
+--- a/src/system.py	(revision f2bb7ad3299f8ebf0c87d791f9c0e858b4688aa5)
++++ b/src/system.py	(date 1621460563903)
+@@ -1,10 +1,10 @@
+ import itertools as it
++from src.components import *
+ 
+ 
+ class LogicSystem:
+ 
+-    @staticmethod
+-    def __create_layer(connections, current_layers):
++    def __create_layer(self, connections, current_layers):
+         mapped_comps = list(it.chain.from_iterable(current_layers))
+ 
+         layer = []
+@@ -20,12 +20,16 @@
+ 
+     def organize_comps(self, connections):
+         layers = [[comp for comp in connections if connections[comp] == []]]
++
+         comp_count = len(layers[0])
++
+         num_of_comps = len(connections)
+ 
+         while comp_count != num_of_comps:
+             new_layer = self.__create_layer(connections, layers)
++
+             layers.append(new_layer)
++
+             comp_count += len(new_layer)
+ 
+         return layers
+@@ -34,32 +38,40 @@
+ 
+         self.connections = connections
+         self.sys_runs = sys_runs
+-        self.sys_name = file_name
+         self.text_file = open('{}.txt'.format(file_name), 'w+')
+         self.layers = self.organize_comps(self.connections)
+         self.mapped_comps = list(it.chain.from_iterable(self.layers))
+ 
+-    def starting_text(self):
+-        text = ''
+-
+-        for layer in range(len(self.layers)):
+-            text += '\n\nLayer {}:\n\n'.format(layer+1)
+-            for comp in self.layers[layer]:
+-                text += '     {}'.format(comp)
+-        text += '\n\n'
+-        self.text_file.write(text)
+-
+     def run_system(self):
+-        self.starting_text()
++
+         run = 0
++        # stop = 0
+         while run < self.sys_runs:
++
+             for comp in self.mapped_comps:
+ 
+                 input_comps = self.connections[comp]
+-                input_values = [in_comp.out for in_comp in input_comps]
++                input_values = []
++                for in_comp in input_comps:
++                    input_values.append(in_comp.out)
+ 
+-                comp.output(*input_values)
++                # if isinstance(comp, USR):
++                #     if comp.current_state == [None, None, None, None]:
++                #         stop += 1
++                #
++                #     if stop == 2:
++                #         run = self.sys_runs
++                #
++                #     comp.output(input_values)
++
++                if not isinstance(comp, ConstOut):
++                    comp.output(*input_values)
+ 
++                else:
++                    pass
++
+             run += 1
+ 
+         self.text_file.close()
++
++
+Index: test/test1.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># import LogicSimulator.src as comps\r\nfrom src.components import *\r\nfrom src.system import *\r\nimport pytest\r\n\r\na = ConstOut('Cst1', 0)\r\n\r\nb = ConstOut('Cst2', 1)\r\n\r\nc = ConstOut('Cst3', 1)\r\n\r\nd = OrGate('Or1')\r\n\r\ne = AndGate('And1')\r\n\r\nf = NandGate('Nand1')\r\n\r\ng = NorGate('Nor1')\r\n\r\nh = Clock('Clk1')\r\n\r\ni = NotGate('Not1')\r\n\r\nj = Mux('mux1')\r\n\r\nk = Switch('swt1')\r\n\r\nl = USR('usr1', [0, 1, 0, 1])\r\n\r\nm = Gate('and2', 'and')\r\n\r\nconnection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e], h: [], i: [a], l: [a, b, h]}\r\n\r\ngate_outputs = {'and': [0, 0, 0, 1], 'or': [0, 1, 1, 1], 'nand': [1, 1, 1, 0], 'nor': [1, 0, 0, 0], 'xor': [0, 1, 1, 0]}\r\n\r\n\r\ndef test_clock():\r\n\r\n    output_list = []\r\n\r\n    comp = h\r\n\r\n    assert comp.out == 0        # This tests if the initial value of the clock is 0\r\n\r\n    for run in range(5):\r\n        comp.output()\r\n        output_list.append(comp.out)\r\n\r\n    assert output_list == [1, 0, 1, 0, 1]    # This tests if the out value of the clock changes with each output call.\r\n\r\n\r\ndef test_gate():\r\n\r\n    outputs = []\r\n\r\n    gate = m\r\n\r\n    for input_list in [[0, 0], [0, 1], [1, 0], [1, 1]]:\r\n\r\n        gate.output(input_list)\r\n\r\n        outputs.append(gate.out)\r\n\r\n    assert outputs == [0, 0, 0, 1]\r\n\r\n\r\ndef test_organizer():\r\n\r\n    layers = organize_comps(connection_dict)\r\n\r\n    assert layers == [[a, b, c, h], [d, e, i, l], [g, f]]\r\n\r\n\r\ndef test_gates():\r\n\r\n    outputs = []\r\n    comp = e\r\n    gate_type = 'and'\r\n\r\n    for inputs in [[0, 0], [0, 1], [1, 0], [1, 1]]:\r\n        comp.output(*inputs)\r\n        outputs.append(comp.out)\r\n\r\n    assert outputs == gate_outputs[gate_type]\r\n\r\n\r\ndef test_mux():\r\n\r\n    outputs = []\r\n    comp = j\r\n\r\n    for inputs in [[1, 2, 3, 4, 0, 0], [1, 2, 3, 4, 1, 0], [1, 2, 3, 4, 0, 1], [1, 2, 3, 4, 1, 1]]:\r\n        comp.output(*inputs)\r\n        outputs.append(comp.out)\r\n\r\n    assert outputs == [1, 2, 3, 4]\r\n\r\n\r\ndef test_switch():\r\n\r\n    outputs = []\r\n    comp = k\r\n\r\n    for inputs in [[1, 0], [1, 1], [0, 0, 1], [0, 1, 1]]:\r\n        comp.output(*inputs)\r\n        outputs.append(comp.out)\r\n\r\n    assert outputs == [0, 1, 0, 1]\r\n\r\n\r\ndef test_usr():\r\n\r\n    outputs = []\r\n    states = []\r\n    comp = l\r\n    for inputs in [[0, 0, 1, 2], [0, 1, 1, 2], [1, 0, 1, 3], [1, 1, 1, None, 1, 1, 1, 1],\r\n                   [1, 1, 0, None, 1, 1, 1, 1]]:\r\n\r\n        comp.output(*inputs)\r\n        outputs.append(comp.out)\r\n        states.append(comp.current_state)\r\n\r\n    assert outputs == [0, 1, 2, [0, 1, 0, 3], [0, 1, 0, 3]]\r\n    assert states == [[0, 1, 0, 1], [2, 0, 1, 0], [0, 1, 0, 3], [1, 1, 1, 1], [1, 1, 1, 1]]\r\n\r\n\r\nsys = LogicSystem(connection_dict, 10, 'test')\r\n\r\n\r\ndef test_system():\r\n\r\n    sys.run_system()\r\n\r\n    assert sys.layers == [[a, b, c, h], [d, e, i, l], [g, f]]\r\n    assert sys.sys_runs == 10\r\n    assert sys.mapped_comps == [a, b, c, h, d, e, i, l, g, f]\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/test/test1.py b/test/test1.py
+--- a/test/test1.py	(revision f2bb7ad3299f8ebf0c87d791f9c0e858b4688aa5)
++++ b/test/test1.py	(date 1621462252879)
+@@ -1,8 +1,9 @@
+-# import LogicSimulator.src as comps
++import src.system
+ from src.components import *
+-from src.system import *
+ import pytest
+ 
++from src.system import LogicSystem
++
+ a = ConstOut('Cst1', 0)
+ 
+ b = ConstOut('Cst2', 1)
+@@ -24,12 +25,9 @@
+ j = Mux('mux1')
+ 
+ k = Switch('swt1')
+-
+-l = USR('usr1', [0, 1, 0, 1])
++l = USR('usr1',[0,1,0,1])
+ 
+-m = Gate('and2', 'and')
+-
+-connection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e], h: [], i: [a], l: [a, b, h]}
++connection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e], h: [], i: [a], l: [a,b,h]}
+ 
+ gate_outputs = {'and': [0, 0, 0, 1], 'or': [0, 1, 1, 1], 'nand': [1, 1, 1, 0], 'nor': [1, 0, 0, 0], 'xor': [0, 1, 1, 0]}
+ 
+@@ -53,22 +51,22 @@
+ 
+     outputs = []
+ 
+-    gate = m
++    gate = i
+ 
+-    for input_list in [[0, 0], [0, 1], [1, 0], [1, 1]]:
++    for input_list in [[0], [1]]:
+ 
+         gate.output(input_list)
+ 
+         outputs.append(gate.out)
+ 
+-    assert outputs == [0, 0, 0, 1]
++    assert outputs == [1, 0]
+ 
+ 
+ def test_organizer():
+ 
+     layers = organize_comps(connection_dict)
+ 
+-    assert layers == [[a, b, c, h], [d, e, i, l], [g, f]]
++    assert layers == [[a, b, c, h], [d, e, i], [g, f]]
+ 
+ 
+ def test_gates():
+@@ -101,8 +99,8 @@
+     outputs = []
+     comp = k
+ 
+-    for inputs in [[1, 0], [1, 1], [0, 0, 1], [0, 1, 1]]:
+-        comp.output(*inputs)
++    for inputs in [[1, 0], [1, 1], [0, 1, 0], [0, 1, 1]]:
++        comp.output(inputs)
+         outputs.append(comp.out)
+ 
+     assert outputs == [0, 1, 0, 1]
+@@ -110,20 +108,11 @@
+ 
+ def test_usr():
+ 
+-    outputs = []
+-    states = []
+     comp = l
+-    for inputs in [[0, 0, 1, 2], [0, 1, 1, 2], [1, 0, 1, 3], [1, 1, 1, None, 1, 1, 1, 1],
+-                   [1, 1, 0, None, 1, 1, 1, 1]]:
+-
+-        comp.output(*inputs)
+-        outputs.append(comp.out)
+-        states.append(comp.current_state)
+-
+-    assert outputs == [0, 1, 2, [0, 1, 0, 3], [0, 1, 0, 3]]
+-    assert states == [[0, 1, 0, 1], [2, 0, 1, 0], [0, 1, 0, 3], [1, 1, 1, 1], [1, 1, 1, 1]]
+-
+-
++    inputs = [1,1,1,1,0,1,0,0]
++    comp.output(*inputs)
++    print(comp.out)
++    assert comp.out == [0,1,0,1]
+ sys = LogicSystem(connection_dict, 10, 'test')
+ 
+ 
+Index: src/components.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import itertools as it\r\n\r\n\r\nclass Comps:\r\n    \"\"\"\r\n    This is a base class for the some of the available components that initializes\r\n    the object with a name and the self.out value of 0.\r\n    \"\"\"\r\n\r\n    def __init__(self, name):\r\n        self.comp_name = name\r\n        self.out = 0\r\n\r\n    def __repr__(self):\r\n        return self.comp_name\r\n\r\n\r\nclass Gate:\r\n\r\n    def __init__(self, name, gate_type):\r\n        self.gate_type = gate_type\r\n        self.comp_name = name\r\n        self.out = 0\r\n\r\n    def output(self, input_list):\r\n        self.out = int({'and': all(input_list),\r\n                        'nand': not all(input_list),\r\n                        'or': any(input_list),\r\n                        'nor': not any(input_list),\r\n                        'xor': input_list.count(1) % 2 != 0\r\n                        }[self.gate_type])\r\n\r\n\r\nclass AndGate(Comps):\r\n    \"\"\"\r\n    This class defines objects with the output method that simulates the behavior of\r\n    the AND Gate. If all the input values are (1) the output will be a (1). Otherwise,\r\n    if there is at least one zero as an input, the output will be a (0).\r\n\r\n    The two input truth table for the AND Gate is:\r\n\r\n    S1 S0 │ output\r\n    ──────┼───────\r\n     0  0 │   0\r\n     0  1 │   0\r\n     1  0 │   0\r\n     1  1 │   1\r\n    \"\"\"\r\n\r\n    def output(self, *input_list):\r\n\r\n        if all(input_list):\r\n            self.out = 1\r\n\r\n        else:\r\n            self.out = 0\r\n\r\n\r\nclass NandGate(Comps):\r\n    \"\"\"\r\n    This class defines objects with the output method that simulates the behavior of\r\n    the NAND Gate. If the at least of the input values is (0), the output will be (1).\r\n    Otherwise, if all inputs are (1), the output will be (0).\r\n\r\n    The two input truth table for the NAND Gate is:\r\n\r\n    S1 S0 │ output\r\n    ──────┼───────\r\n     0  0 │   1\r\n     0  1 │   1\r\n     1  0 │   1\r\n     1  1 │   0\r\n    \"\"\"\r\n\r\n    def output(self, *input_list):\r\n\r\n        if input_list.count(0) >= 1:\r\n            self.out = 1\r\n\r\n        else:\r\n            self.out = 0\r\n\r\n\r\nclass OrGate(Comps):\r\n    \"\"\"\r\n    This class defines objects with the output method that simulates the behavior of\r\n    the OR Gate. If at least one of the inputs in a (1), the output will be a (1).\r\n    Otherwise, if all the inputs are (0), the output will be (0).\r\n\r\n    The two input truth table for the OR Gate is:\r\n\r\n    S1 S0 │ output\r\n    ──────┼───────\r\n     0  0 │   0\r\n     0  1 │   1\r\n     1  0 │   1\r\n     1  1 │   1\r\n    \"\"\"\r\n\r\n    def output(self, *input_list):\r\n\r\n        if input_list.count(1) >= 1:\r\n            self.out = 1\r\n\r\n        else:\r\n            self.out = 0\r\n\r\n\r\nclass NorGate(Comps):\r\n    \"\"\"\r\n    This class defines objects with the output method that simulates the behavior of\r\n    the NOR Gate. If all the input values are (0), the output will be (1). Otherwise,\r\n    at least one of the inputs is (1), the output will be (0).\r\n\r\n    The two input truth table for the NOR Gate is:\r\n\r\n    S1 S0 │ output\r\n    ──────┼───────\r\n     0  0 │   1\r\n     0  1 │   0\r\n     1  0 │   0\r\n     1  1 │   0\r\n    \"\"\"\r\n\r\n    def output(self, *input_list):\r\n\r\n        if input_list.count(1) == 0:\r\n            self.out = 1\r\n\r\n        else:\r\n            self.out = 0\r\n\r\n\r\nclass XorGate(Comps):\r\n    \"\"\"\r\n    This class defines objects with the output method that simulates the behavior\r\n    of the XOR Gate. If the number of inputs that are (1) is odd, the output will\r\n    be (1). Otherwise, if the number of inputs that are (1) is even, the output\r\n    will be (0).\r\n\r\n    The two input truth table for the XOR Gate is:\r\n\r\n    S1 S0 │ output\r\n    ──────┼───────\r\n     0  0 │   0\r\n     0  1 │   1\r\n     1  0 │   1\r\n     1  1 │   0\r\n    \"\"\"\r\n\r\n    def output(self, *input_list):\r\n\r\n        if input_list.count(1) % 2 != 0:\r\n            self.out = 1\r\n\r\n        else:\r\n            self.out = 0\r\n\r\n\r\nclass NotGate(Comps):\r\n    \"\"\"\r\n    This class defines objects with the output method that simulates the\r\n    behavior of the NOT Gate. If the input is a (0) the output is will be a\r\n    (1) or if the input is a (1) the output will be a (0).\r\n\r\n    The truth table for the NOT Gate is:\r\n\r\n     S │ output\r\n    ───┼───────\r\n     0 │   1\r\n     1 │   0\r\n    \"\"\"\r\n\r\n    def output(self, *input_list):\r\n        self.out = int(not input_list[0])\r\n\r\n\r\nclass ConstOut(Comps):\r\n    \"\"\"\r\n    This class defines objects that will provide a fixed output, either\r\n    a (0) or a (1), throughout the simulation.\r\n    \"\"\"\r\n\r\n    def __init__(self, name, output):\r\n        super().__init__(name)\r\n        self.out = output\r\n\r\n    def output(self):\r\n        pass\r\n\r\n\r\nclass Clock(Comps):\r\n    \"\"\"\r\n    This class defines objects with an output method that will change\r\n    the output value from (1) to (0) or from (0) to (1) on all simulation\r\n    runs.\r\n    \"\"\"\r\n\r\n    def output(self):\r\n        self.out = int(not self.out)\r\n\r\n\r\nclass Mux(Comps):\r\n    \"\"\"\r\n    This class defines objects with an output method that simulates the\r\n    behavior of the MUX component. This component will accept 6 inputs:\r\n    2 for mode selection and 4 input values. The mode selection inputs\r\n    determine which of the 4 input values goes to the output.\r\n\r\n    This is the mode selection table:\r\n\r\n    mode_1 mode_0 │ output\r\n    ──────────────┼────────\r\n      0      0    │ Input 0\r\n      0      1    │ Input 1\r\n      1      0    │ Input 2\r\n      1      1    │ Input 3\r\n    \"\"\"\r\n\r\n    def output(self, input_0, input_1, input_2, input_3, mode_0, mode_1):\r\n\r\n        if mode_1 == 0 and mode_0 == 0:\r\n\r\n            self.out = input_0\r\n\r\n        elif mode_1 == 0 and mode_0 == 1:\r\n\r\n            self.out = input_1\r\n\r\n        elif mode_1 == 1 and mode_0 == 0:\r\n\r\n            self.out = input_2\r\n\r\n        else:\r\n\r\n            self.out = input_3\r\n\r\n\r\nclass Switch(Comps):\r\n    \"\"\"\r\n    This class defines objects with an output method that simulates the\r\n    behavior of the Switch component. When the component receives two inputs,\r\n    it behaves like a switch where a mode input of (1) passes the input value\r\n    directly to the output. A mode input of (0) blocks the pass and keeps the\r\n    last output value saved.\r\n\r\n     S mode │ output\r\n    ────────┼───────\r\n     0   1  │   0\r\n     1   1  │   1\r\n     0   0  │   1\r\n     0   1  │   0\r\n\r\n\r\n    When the component receives three inputs, the mode selection input selects\r\n    one of the two available input values. If the mode is (0) the input_0 goes\r\n    to the output. Otherwise if the mode is (1), the input_1 goes to the output.\r\n\r\n     S1 S0  mode │ output\r\n    ─────────────┼───────\r\n     1   0   0   │   0\r\n     1   0   1   │   1\r\n\r\n    \"\"\"\r\n\r\n    def output(self, input_0, mode, input_1=None):\r\n\r\n        if input_1:\r\n            if mode:\r\n                self.out = input_1\r\n            else:\r\n                self.out = input_0\r\n\r\n        elif mode:\r\n            self.out = input_0\r\n\r\n\r\nclass USR(Comps):\r\n    \"\"\"\r\n    This class defines objects with the output method that simulates the\r\n    behavior of a 4-Bit Universal Shift Register (USR). Like the real USR,\r\n    this component has 4 register operating modes determined by two mode\r\n    selection inputs.\r\n\r\n    USR Operating Modes:\r\n\r\n     mode_1 mode_0 │ Register Operations\r\n    ───────────────┼────────────────────\r\n       0      0    │  No Change\r\n       0      1    │  Shift Right\r\n       1      0    │  Shift Left\r\n       1      1    │  Parallel Load\r\n    \"\"\"\r\n\r\n    def __init__(self, name, initial_state):\r\n        super().__init__(name)\r\n        self.current_state = initial_state\r\n\r\n    def output(self, mode_1, mode_0, clock, data_in=None, *parallel_inputs):\r\n\r\n        if clock == 1:\r\n\r\n            if mode_1 == 1 and mode_0 == 1:\r\n                self.out = self.current_state\r\n                self.current_state = list(parallel_inputs)\r\n\r\n            elif mode_1 == 1 and mode_0 == 0:\r\n                self.out = self.current_state[0]\r\n                self.current_state = [self.current_state[1], self.current_state[2], self.current_state[3], data_in]\r\n\r\n            elif mode_1 == 0 and mode_0 == 1:\r\n                self.out = self.current_state[3]\r\n                self.current_state = [data_in, self.current_state[0], self.current_state[1], self.current_state[2]]\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/components.py b/src/components.py
+--- a/src/components.py	(revision f2bb7ad3299f8ebf0c87d791f9c0e858b4688aa5)
++++ b/src/components.py	(date 1621465107195)
+@@ -10,7 +10,7 @@
+     def __init__(self, name):
+         self.comp_name = name
+         self.out = 0
+-
++        self.current_state = ''
+     def __repr__(self):
+         return self.comp_name
+ 
+@@ -306,7 +306,7 @@
+ 
+             elif mode_1 == 1 and mode_0 == 0:
+                 self.out = self.current_state[0]
+-                self.current_state = [self.current_state[1], self.current_state[2], self.current_state[3], data_in]
++                self.current_state = [self.current_state[1],self.current_state[2], self.current_state[3], data_in]
+ 
+             elif mode_1 == 0 and mode_0 == 1:
+                 self.out = self.current_state[3]
+Index: test/system_test.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from src.system import *\r\nimport pytest\r\n\r\nsys_test = LogicSystem()\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/test/system_test.py b/test/system_test.py
+--- a/test/system_test.py	(revision f2bb7ad3299f8ebf0c87d791f9c0e858b4688aa5)
++++ b/test/system_test.py	(date 1621460563945)
+@@ -1,4 +1,4 @@
+ from src.system import *
+ import pytest
+ 
+-sys_test = LogicSystem()
++sys_test = LogicSystem()
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"d949a879-9152-49c3-87b4-383b2930b1cb\" name=\"Default Changelist\" comment=\"run_system prototype added.\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/components.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/components.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/system.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/system.py\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitSEFilterConfiguration\">\r\n    <file-type-list>\r\n      <filtered-out-file-type name=\"LOCAL_BRANCH\" />\r\n      <filtered-out-file-type name=\"REMOTE_BRANCH\" />\r\n      <filtered-out-file-type name=\"TAG\" />\r\n      <filtered-out-file-type name=\"COMMIT_BY_MESSAGE\" />\r\n    </file-type-list>\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"1qrSuYYYOg01JiEQDsu3R3ZHJ5J\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"SHARE_PROJECT_CONFIGURATION_FILES\" value=\"true\" />\r\n    <property name=\"last_opened_file_path\" value=\"$USER_HOME$/Documents/UNI DOCS/Cuarto Año 2020 - 2021/Segundo Semestre 2020 - 2021/Rumarino/Project files/test_temp.py\" />\r\n    <property name=\"settings.editor.selected.configurable\" value=\"preferences.editor\" />\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Python tests.pytest for test1.test_system\">\r\n    <configuration name=\"pytest for test1.test_gate\" type=\"tests\" factoryName=\"py.test\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"LogicSimulator\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$/test\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"_new_keywords\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_parameters\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_additionalArguments\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_target\" value=\"&quot;test1.test_gate&quot;\" />\r\n      <option name=\"_new_targetType\" value=\"&quot;PYTHON&quot;\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"pytest for test1.test_organizer\" type=\"tests\" factoryName=\"py.test\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"LogicSimulator\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$/test\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"_new_keywords\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_parameters\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_additionalArguments\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_target\" value=\"&quot;test1.test_organizer&quot;\" />\r\n      <option name=\"_new_targetType\" value=\"&quot;PYTHON&quot;\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"pytest for test1.test_system\" type=\"tests\" factoryName=\"py.test\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"LogicSimulator\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$/test\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"_new_keywords\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_parameters\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_additionalArguments\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_target\" value=\"&quot;test1.test_system&quot;\" />\r\n      <option name=\"_new_targetType\" value=\"&quot;PYTHON&quot;\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"pytest for test1.test_usr\" type=\"tests\" factoryName=\"py.test\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"LogicSimulator\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$/test\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"_new_keywords\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_parameters\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_additionalArguments\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_target\" value=\"&quot;test1.test_usr&quot;\" />\r\n      <option name=\"_new_targetType\" value=\"&quot;PYTHON&quot;\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"pytest in test1.py\" type=\"tests\" factoryName=\"py.test\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"LogicSimulator\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$/test\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"_new_keywords\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_parameters\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_additionalArguments\" value=\"&quot;&quot;\" />\r\n      <option name=\"_new_target\" value=\"&quot;$PROJECT_DIR$/test/test1.py&quot;\" />\r\n      <option name=\"_new_targetType\" value=\"&quot;PATH&quot;\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Python tests.pytest for test1.test_system\" />\r\n        <item itemvalue=\"Python tests.pytest for test1.test_usr\" />\r\n        <item itemvalue=\"Python tests.pytest for test1.test_organizer\" />\r\n        <item itemvalue=\"Python tests.pytest in test1.py\" />\r\n        <item itemvalue=\"Python tests.pytest for test1.test_gate\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"d949a879-9152-49c3-87b4-383b2930b1cb\" name=\"Default Changelist\" comment=\"\" />\r\n      <created>1617836438596</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1617836438596</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Testing\">\r\n      <created>1617841129766</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1617841129766</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Testing\">\r\n      <created>1617841186462</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1617841186462</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"All gates are now a subclass of Comps.\">\r\n      <created>1617842063124</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1617842063124</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"The repr() function is no longer used.\">\r\n      <created>1617928878620</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1617928878620</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"Generalized Gates\">\r\n      <created>1618268634484</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1618268634484</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"Small changes and some documentation.\">\r\n      <created>1620060286185</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1620060286185</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"Switch modified and documentation.\">\r\n      <created>1620065443139</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1620065443139</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"USR modifications and testing added. system.py file added to src.\">\r\n      <created>1620071677626</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1620071677626</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"Some documentation changes\">\r\n      <created>1620233194136</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1620233194136</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"Posible system added.\">\r\n      <created>1620238348378</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1620238348378</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00011\" summary=\"System continued...\">\r\n      <created>1620239253008</created>\r\n      <option name=\"number\" value=\"00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1620239253008</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00012\" summary=\"run_system prototype added.\">\r\n      <created>1620240429827</created>\r\n      <option name=\"number\" value=\"00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1620240429827</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"13\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n    <option name=\"oldMeFiltersMigrated\" value=\"true\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Testing\" />\r\n    <MESSAGE value=\"All gates are now a subclass of Comps.\" />\r\n    <MESSAGE value=\"The repr() function is no longer used.\" />\r\n    <MESSAGE value=\"Generalized Gates\" />\r\n    <MESSAGE value=\"Small changes and some documentation.\" />\r\n    <MESSAGE value=\"Switch modified and documentation.\" />\r\n    <MESSAGE value=\"USR modifications and testing added. system.py file added to src.\" />\r\n    <MESSAGE value=\"Some documentation changes\" />\r\n    <MESSAGE value=\"Posible system added.\" />\r\n    <MESSAGE value=\"System continued...\" />\r\n    <MESSAGE value=\"run_system prototype added.\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"run_system prototype added.\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision f2bb7ad3299f8ebf0c87d791f9c0e858b4688aa5)
++++ b/.idea/workspace.xml	(date 1621462175866)
+@@ -1,10 +1,12 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="ChangeListManager">
+-    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="run_system prototype added.">
++    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="USR First Draft">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/components.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/components.py" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/system.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/test/system_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/system_test.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/test/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test1.py" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -43,23 +45,28 @@
+     <property name="settings.editor.selected.configurable" value="preferences.editor" />
+   </component>
+   <component name="RunManager" selected="Python tests.pytest for test1.test_system">
+-    <configuration name="pytest for test1.test_gate" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
++    <configuration name="system" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+       <module name="LogicSimulator" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+       <option name="PARENT_ENVS" value="true" />
++      <envs>
++        <env name="PYTHONUNBUFFERED" value="1" />
++      </envs>
+       <option name="SDK_HOME" value="" />
+-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
++      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+       <option name="IS_MODULE_SDK" value="true" />
+       <option name="ADD_CONTENT_ROOTS" value="true" />
+       <option name="ADD_SOURCE_ROOTS" value="true" />
+-      <option name="_new_keywords" value="&quot;&quot;" />
+-      <option name="_new_parameters" value="&quot;&quot;" />
+-      <option name="_new_additionalArguments" value="&quot;&quot;" />
+-      <option name="_new_target" value="&quot;test1.test_gate&quot;" />
+-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
++      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/system.py" />
++      <option name="PARAMETERS" value="" />
++      <option name="SHOW_COMMAND_LINE" value="false" />
++      <option name="EMULATE_TERMINAL" value="false" />
++      <option name="MODULE_MODE" value="false" />
++      <option name="REDIRECT_INPUT" value="false" />
++      <option name="INPUT_FILE" value="" />
+       <method v="2" />
+     </configuration>
+-    <configuration name="pytest for test1.test_organizer" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
++    <configuration name="pytest for test1.test_gate" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+       <module name="LogicSimulator" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+       <option name="PARENT_ENVS" value="true" />
+@@ -71,11 +78,11 @@
+       <option name="_new_keywords" value="&quot;&quot;" />
+       <option name="_new_parameters" value="&quot;&quot;" />
+       <option name="_new_additionalArguments" value="&quot;&quot;" />
+-      <option name="_new_target" value="&quot;test1.test_organizer&quot;" />
++      <option name="_new_target" value="&quot;test1.test_gate&quot;" />
+       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+       <method v="2" />
+     </configuration>
+-    <configuration name="pytest for test1.test_system" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
++    <configuration name="pytest for test1.test_organizer" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+       <module name="LogicSimulator" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+       <option name="PARENT_ENVS" value="true" />
+@@ -87,11 +94,11 @@
+       <option name="_new_keywords" value="&quot;&quot;" />
+       <option name="_new_parameters" value="&quot;&quot;" />
+       <option name="_new_additionalArguments" value="&quot;&quot;" />
+-      <option name="_new_target" value="&quot;test1.test_system&quot;" />
++      <option name="_new_target" value="&quot;test1.test_organizer&quot;" />
+       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+       <method v="2" />
+     </configuration>
+-    <configuration name="pytest for test1.test_usr" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
++    <configuration name="pytest for test1.test_system" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+       <module name="LogicSimulator" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+       <option name="PARENT_ENVS" value="true" />
+@@ -103,7 +110,7 @@
+       <option name="_new_keywords" value="&quot;&quot;" />
+       <option name="_new_parameters" value="&quot;&quot;" />
+       <option name="_new_additionalArguments" value="&quot;&quot;" />
+-      <option name="_new_target" value="&quot;test1.test_usr&quot;" />
++      <option name="_new_target" value="&quot;test1.test_system&quot;" />
+       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+       <method v="2" />
+     </configuration>
+@@ -126,7 +133,7 @@
+     <recent_temporary>
+       <list>
+         <item itemvalue="Python tests.pytest for test1.test_system" />
+-        <item itemvalue="Python tests.pytest for test1.test_usr" />
++        <item itemvalue="Python.system" />
+         <item itemvalue="Python tests.pytest for test1.test_organizer" />
+         <item itemvalue="Python tests.pytest in test1.py" />
+         <item itemvalue="Python tests.pytest for test1.test_gate" />
+@@ -212,21 +219,7 @@
+       <option name="project" value="LOCAL" />
+       <updated>1620238348378</updated>
+     </task>
+-    <task id="LOCAL-00011" summary="System continued...">
+-      <created>1620239253008</created>
+-      <option name="number" value="00011" />
+-      <option name="presentableId" value="LOCAL-00011" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1620239253008</updated>
+-    </task>
+-    <task id="LOCAL-00012" summary="run_system prototype added.">
+-      <created>1620240429827</created>
+-      <option name="number" value="00012" />
+-      <option name="presentableId" value="LOCAL-00012" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1620240429827</updated>
+-    </task>
+-    <option name="localTasksCounter" value="13" />
++    <option name="localTasksCounter" value="11" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+@@ -251,8 +244,6 @@
+     <MESSAGE value="USR modifications and testing added. system.py file added to src." />
+     <MESSAGE value="Some documentation changes" />
+     <MESSAGE value="Posible system added." />
+-    <MESSAGE value="System continued..." />
+-    <MESSAGE value="run_system prototype added." />
+-    <option name="LAST_COMMIT_MESSAGE" value="run_system prototype added." />
++    <option name="LAST_COMMIT_MESSAGE" value="Posible system added." />
+   </component>
+ </project>
+\ No newline at end of file
