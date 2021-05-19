@@ -183,8 +183,10 @@ class ConstOut(Comps):
 
     def __init__(self, name, output):
         super().__init__(name)
-
         self.out = output
+
+    def output(self):
+        pass
 
 
 class Clock(Comps):
@@ -269,11 +271,8 @@ class Switch(Comps):
             else:
                 self.out = input_0
 
-        else:
-            if mode:
-                self.out = input_0
-            else:
-                pass
+        elif mode:
+            self.out = input_0
 
 
 class USR(Comps):
@@ -312,39 +311,3 @@ class USR(Comps):
             elif mode_1 == 0 and mode_0 == 1:
                 self.out = self.current_state[3]
                 self.current_state = [data_in, self.current_state[0], self.current_state[1], self.current_state[2]]
-
-            else:
-                pass
-
-
-def _create_layer(connections, current_layers):
-    mapped_comps = list(it.chain.from_iterable(current_layers))
-
-    layer = []
-
-    for comp, input_comps in connections.items():
-
-        if comp not in layer \
-                and comp not in mapped_comps \
-                and all(input_comp in mapped_comps for input_comp in input_comps):
-            layer.append(comp)
-
-    return layer
-
-
-def organize_comps(connections):
-    layers = [[comp for comp in connections if connections[comp] == []]]
-
-    comp_count = len(layers[0])
-
-    num_of_comps = len(connections)
-
-    while comp_count != num_of_comps:
-        new_layer = _create_layer(connections, layers)
-
-        layers.append(new_layer)
-
-        comp_count += len(new_layer)
-
-    return layers
-

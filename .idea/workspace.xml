@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="System continued...">
+    <list default="true" id="d949a879-9152-49c3-87b4-383b2930b1cb" name="Default Changelist" comment="run_system prototype added.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/components.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/system.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/system.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test1.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/test1.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,10 +126,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python tests.pytest for test1.test_system" />
+        <item itemvalue="Python tests.pytest for test1.test_usr" />
         <item itemvalue="Python tests.pytest for test1.test_organizer" />
         <item itemvalue="Python tests.pytest in test1.py" />
         <item itemvalue="Python tests.pytest for test1.test_gate" />
-        <item itemvalue="Python tests.pytest for test1.test_usr" />
       </list>
     </recent_temporary>
   </component>
@@ -219,7 +219,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620239253008</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="run_system prototype added.">
+      <created>1620240429827</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1620240429827</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -245,6 +252,7 @@
     <MESSAGE value="Some documentation changes" />
     <MESSAGE value="Posible system added." />
     <MESSAGE value="System continued..." />
-    <option name="LAST_COMMIT_MESSAGE" value="System continued..." />
+    <MESSAGE value="run_system prototype added." />
+    <option name="LAST_COMMIT_MESSAGE" value="run_system prototype added." />
   </component>
 </project>
