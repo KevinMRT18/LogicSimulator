@@ -17,7 +17,7 @@ class Comps:
     def __init__(self, name):
         self.comp_name = name
         self.out = 0
-
+        self.current_state = 'None'
     def __repr__(self):
         return self.comp_name
 
@@ -338,7 +338,7 @@ class USR(Comps):
 
             elif mode_1 == 1 and mode_0 == 0:
                 self.out = self.current_state[0]
-                self.current_state = [self.current_state[1], self.current_state[2], self.current_state[3], data_in]
+                self.current_state = [self.current_state[1],self.current_state[2], self.current_state[3], data_in]
 
             elif mode_1 == 0 and mode_0 == 1:
                 self.out = self.current_state[3]

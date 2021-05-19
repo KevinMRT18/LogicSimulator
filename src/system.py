@@ -51,17 +51,20 @@ class LogicSystem:
 
     def run_system(self):
         self.starting_text()
-        run = 1
+        run = 0
         while run < self.sys_runs:
-            self.text_file.write('Run{}:'.format(run))
+
+            self.text_file.write("-"*65+'\n\nRun{}:\n\n'.format(run))
+
             for comp in self.mapped_comps:
 
                 input_comps = self.connections[comp]
                 input_values = [in_comp.out for in_comp in input_comps]
 
                 comp.output(*input_values)
-                self.text_file.write('{} output: {}\n\n'.format(comp.comp_name, comp.out))
-
+                self.text_file.write('{} output: {} current state:{}\n\n'.format(comp.comp_name,
+                                                                                 comp.out,
+                                                                                 comp.current_state))
             run += 1
 
         self.text_file.close()

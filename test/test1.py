@@ -1,7 +1,8 @@
-# import LogicSimulator.src as comps
+import src.system
 from src.components import *
-from src.system import *
 import pytest
+
+from src.system import LogicSystem
 
 a = ConstOut('Cst1', 0)
 
@@ -24,12 +25,9 @@ i = NotGate('Not1')
 j = Mux('mux1')
 
 k = Switch('swt1')
+l = USR('usr1',[0,1,0,1])
 
-l = USR('usr1', [0, 1, 0, 1])
-
-m = Gate('and2', 'and')
-
-connection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e], h: [], i: [a], l: [a, b, h]}
+connection_dict = {a: [], b: [], c: [], g: [d, c], d: [a, b, c], e: [b, c], f: [d, e], h: [], i: [a], l: [a,b,h]}
 
 gate_outputs = {'and': [0, 0, 0, 1], 'or': [0, 1, 1, 1], 'nand': [1, 1, 1, 0], 'nor': [1, 0, 0, 0], 'xor': [0, 1, 1, 0]}
 
@@ -53,22 +51,22 @@ def test_gate():
 
     outputs = []
 
-    gate = m
+    gate = i
 
-    for input_list in [[0, 0], [0, 1], [1, 0], [1, 1]]:
+    for input_list in [[0], [1]]:
 
         gate.output(input_list)
 
         outputs.append(gate.out)
 
-    assert outputs == [0, 0, 0, 1]
+    assert outputs == [1, 0]
 
 
 def test_organizer():
 
     layers = organize_comps(connection_dict)
 
-    assert layers == [[a, b, c, h], [d, e, i, l], [g, f]]
+    assert layers == [[a, b, c, h], [d, e, i], [g, f]]
 
 
 def test_gates():
@@ -101,8 +99,8 @@ def test_switch():
     outputs = []
     comp = k
 
-    for inputs in [[1, 0], [1, 1], [0, 0, 1], [0, 1, 1]]:
-        comp.output(*inputs)
+    for inputs in [[1, 0], [1, 1], [0, 1, 0], [0, 1, 1]]:
+        comp.output(inputs)
         outputs.append(comp.out)
 
     assert outputs == [0, 1, 0, 1]
@@ -110,20 +108,11 @@ def test_switch():
 
 def test_usr():
 
-    outputs = []
-    states = []
     comp = l
-    for inputs in [[0, 0, 1, 2], [0, 1, 1, 2], [1, 0, 1, 3], [1, 1, 1, None, 1, 1, 1, 1],
-                   [1, 1, 0, None, 1, 1, 1, 1]]:
-
-        comp.output(*inputs)
-        outputs.append(comp.out)
-        states.append(comp.current_state)
-
-    assert outputs == [0, 1, 2, [0, 1, 0, 3], [0, 1, 0, 3]]
-    assert states == [[0, 1, 0, 1], [2, 0, 1, 0], [0, 1, 0, 3], [1, 1, 1, 1], [1, 1, 1, 1]]
-
-
+    inputs = [1,1,1,1,0,1,0,0]
+    comp.output(*inputs)
+    print(comp.out)
+    assert comp.out == [0,1,0,1]
 sys = LogicSystem(connection_dict, 10, 'test')
 
 
