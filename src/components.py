@@ -343,3 +343,6 @@ class USR(Comps):
             elif mode_1 == 0 and mode_0 == 1:
                 self.out = self.current_state[3]
                 self.current_state = [data_in, self.current_state[0], self.current_state[1], self.current_state[2]]
+
+        if not bool(self.out):
+            self.out = 0

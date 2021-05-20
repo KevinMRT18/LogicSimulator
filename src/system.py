@@ -40,19 +40,25 @@ class LogicSystem:
         self.mapped_comps = list(it.chain.from_iterable(self.layers))
 
     def starting_text(self):
-        text = ''
+        text = 'This text file is a simulation of the system {}\n\n' \
+               'The following is the network layout for the system.'.format(self.sys_name)
 
         for layer in range(len(self.layers)):
             text += '\n\nLayer {}:\n\n'.format(layer+1)
             for comp in self.layers[layer]:
                 text += '     {}'.format(comp)
-        text += '\n\n'
+        text += '\n\n' + '-'*65 + '\n\nInitial state for all components:\n\n\n'
+
+        for comp in self.mapped_comps:
+            text += '{} output: {} current state: {}\n\n'.format(comp.comp_name, comp.out, comp.current_state)
+
         self.text_file.write(text)
 
     def run_system(self):
         self.starting_text()
-        run = 0
-        while run < self.sys_runs:
+        self.text_file.write('-'*65 + '\n\nSimulation Start\n\n')
+        run = 1
+        while run <= self.sys_runs:
 
             self.text_file.write("-"*65+'\n\nRun{}:\n\n'.format(run))
 

@@ -113,6 +113,8 @@ def test_usr():
     comp.output(*inputs)
     print(comp.out)
     assert comp.out == [0,1,0,1]
+
+
 sys = LogicSystem(connection_dict, 10, 'test')
 
 
